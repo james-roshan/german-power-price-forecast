@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "depower"
+version = "0.2.0"
+description = "Leakage-safe day-ahead electricity price forecasting for the German-Luxembourg bidding zone"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pandas>=2.2", "numpy", "pyarrow", "requests", "holidays",
+  "scikit-learn", "lightgbm", "matplotlib", "joblib",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "jupyter", "nbformat", "nbclient", "ipykernel"]
+
+[project.scripts]
+depower = "depower.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+src = ["src", "tests", "scripts"]
+extend-exclude = ["notebooks", "data"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

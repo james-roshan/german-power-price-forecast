@@ -1,0 +1,908 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>DE Power Price Forecast</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --bg-card: #ffffff;
+    --bg-code: #f0ede6;
+    --text: #1a1814;
+    --text-muted: #6b6760;
+    --border: #e0ddd6;
+    --accent: #c45c1a;
+    --accent-soft: #fdf0e8;
+    --green: #2a7a4b;
+    --green-soft: #e8f5ee;
+    --blue: #1e5fa8;
+    --blue-soft: #e8f0fb;
+    --yellow-soft: #fdf7e3;
+    --yellow: #a07c10;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141210;
+      --bg-card: #1e1c19;
+      --bg-code: #262420;
+      --text: #f0ede6;
+      --text-muted: #9a9590;
+      --border: #2e2c28;
+      --accent: #e0784a;
+      --accent-soft: #2a1a10;
+      --green: #4caf7d;
+      --green-soft: #0e2318;
+      --blue: #6ba3e8;
+      --blue-soft: #0d1e35;
+      --yellow-soft: #1e1a08;
+      --yellow: #d4aa40;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #141210;
+    --bg-card: #1e1c19;
+    --bg-code: #262420;
+    --text: #f0ede6;
+    --text-muted: #9a9590;
+    --border: #2e2c28;
+    --accent: #e0784a;
+    --accent-soft: #2a1a10;
+    --green: #4caf7d;
+    --green-soft: #0e2318;
+    --blue: #6ba3e8;
+    --blue-soft: #0d1e35;
+    --yellow-soft: #1e1a08;
+    --yellow: #d4aa40;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    padding-inline: 20px;
+    padding-block: 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .doc-header {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 28px;
+    margin-bottom: 48px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+  }
+
+  /* ── Section headings ── */
+  h2 {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 52px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 28px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  p { margin-bottom: 14px; color: var(--text); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Callout boxes ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 24px 0;
+    font-size: .93rem;
+  }
+  .callout.green {
+    border-color: var(--green);
+    background: var(--green-soft);
+  }
+  .callout.blue {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+  }
+  .callout.yellow {
+    border-color: var(--yellow);
+    background: var(--yellow-soft);
+  }
+  .callout strong { color: var(--accent); }
+  .callout.green strong { color: var(--green); }
+  .callout.blue strong { color: var(--blue); }
+  .callout.yellow strong { color: var(--yellow); }
+
+  /* ── Diagram: Timeline ── */
+  .timeline-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 20px;
+    margin: 28px 0;
+    overflow-x: auto;
+  }
+  .timeline-diagram svg { display: block; width: 100%; max-width: 780px; margin: 0 auto; }
+
+  /* ── Data table ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    margin: 20px 0;
+  }
+  .data-table th {
+    background: var(--bg-code);
+    padding: 9px 14px;
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg-code); }
+
+  /* ── Beneficiary cards ── */
+  .bene-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .bene-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .bene-card .icon {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .bene-card .who {
+    font-weight: 600;
+    font-size: .95rem;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .bene-card .how {
+    font-size: .85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .bene-card .example {
+    font-size: .82rem;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--bg-code);
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .tag-primary { color: var(--green); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .tag-secondary { color: var(--text-muted); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+
+  /* ── Price diagram ── */
+  .price-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  /* ── Feature rows ── */
+  .feature-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feature-row:last-child { border-bottom: none; }
+  .feature-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .8rem;
+    background: var(--bg-code);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    color: var(--blue);
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+  .feature-desc { font-size: .88rem; color: var(--text-muted); }
+
+  /* ── Leakage diagram ── */
+  .leakage-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+  .leakage-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .leakage-row:last-child { border-bottom: none; }
+  .leakage-verdict {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: 64px;
+    text-align: center;
+  }
+  .verdict-ok { background: var(--green-soft); color: var(--green); }
+  .verdict-bad { background: #fde8e8; color: #c0392b; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .verdict-bad { background: #2a0e0e; color: #e07070; }
+  }
+  :root[data-theme="dark"] .verdict-bad { background: #2a0e0e; color: #e07070; }
+  .leakage-text { font-size: .88rem; color: var(--text); }
+  .leakage-reason { font-size: .8rem; color: var(--text-muted); }
+
+  /* ── Code block ── */
+  .codeblock {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre;
+  }
+  .cmt { color: var(--text-muted); }
+  .num { color: var(--accent); }
+  .kw { color: var(--blue); }
+
+  /* ── Metric tiles ── */
+  .metric-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .metric-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    min-width: 140px;
+    flex: 1;
+  }
+  .metric-tile .val {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 4px;
+  }
+  .metric-tile .lbl {
+    font-size: .78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ── Misc ── */
+  ul { padding-left: 20px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; font-size: .92rem; }
+  .mono { font-family: 'IBM Plex Mono', monospace; font-size: .85rem; }
+  .accent { color: var(--accent); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: .8rem;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  @media (max-width: 500px) {
+    .bene-grid { grid-template-columns: 1fr; }
+    .feature-label { min-width: 0; }
+    .feature-row { flex-direction: column; gap: 6px; }
+    .metric-tile { min-width: 100px; }
+  }
+</style>
+
+<div class="doc-header">
+  <div class="eyebrow">Project Reference Document</div>
+  <h1>German Day-Ahead Electricity Price Forecasting</h1>
+  <p class="subtitle">Problem statement, data, methodology, and beneficiaries — a complete guide in plain language with examples.</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: THE CORE QUESTION
+═══════════════════════════════════════════ -->
+<h2>1. The Core Question</h2>
+
+<p>
+  Every day, the German electricity market runs a single auction. Buyers and sellers submit bids. Prices are set. The market closes. And then electricity flows.
+</p>
+
+<div class="callout">
+  <strong>The one question this project answers:</strong><br>
+  "What will electricity cost in Germany tomorrow — for each of the 24 hours of the day — before the auction closes today at noon?"
+</div>
+
+<p>
+  This is called a <strong>day-ahead price forecast</strong>. The output is 24 numbers, one per hour, in €/MWh (euros per megawatt-hour). These numbers are what factories, traders, and power plant operators use to plan their next day.
+</p>
+
+<!-- Timeline diagram -->
+<div class="timeline-diagram">
+  <svg viewBox="0 0 760 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Timeline line -->
+    <line x1="40" y1="80" x2="720" y2="80" stroke="currentColor" stroke-opacity=".2" stroke-width="2"/>
+
+    <!-- Thursday -->
+    <circle cx="100" cy="80" r="7" fill="var(--accent)"/>
+    <text x="100" y="55" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--text-muted)">Thursday</text>
+    <text x="100" y="43" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">D−1</text>
+
+    <!-- 12:00 noon marker -->
+    <line x1="250" y1="60" x2="250" y2="100" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,3"/>
+    <circle cx="250" cy="80" r="9" fill="var(--accent)"/>
+    <text x="250" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--accent)">12:00</text>
+    <text x="250" y="143" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--accent)">AUCTION</text>
+    <text x="250" y="156" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--accent)">CLOSES</text>
+    <!-- Label above -->
+    <text x="250" y="30" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="var(--accent)" font-weight="600">← You must predict BEFORE this</text>
+
+    <!-- Arrow pointing left from auction line -->
+    <text x="155" y="105" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--text-muted)">Your forecast window</text>
+
+    <!-- Friday -->
+    <circle cx="440" cy="80" r="7" fill="var(--blue)"/>
+    <text x="440" y="55" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--text-muted)">Friday</text>
+    <text x="440" y="43" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">D (delivery)</text>
+
+    <!-- 24 hour ticks on Friday -->
+    <g stroke="var(--blue)" stroke-opacity=".4">
+      <line x1="370" y1="76" x2="370" y2="84"/>
+      <line x1="390" y1="76" x2="390" y2="84"/>
+      <line x1="410" y1="76" x2="410" y2="84"/>
+      <line x1="430" y1="76" x2="430" y2="84"/>
+      <line x1="450" y1="76" x2="450" y2="84"/>
+      <line x1="470" y1="76" x2="470" y2="84"/>
+      <line x1="490" y1="76" x2="490" y2="84"/>
+      <line x1="510" y1="76" x2="510" y2="84"/>
+    </g>
+    <text x="440" y="105" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--blue)">24 hourly prices</text>
+    <text x="440" y="118" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--blue)">00:00 → 23:00</text>
+
+    <!-- Saturday -->
+    <circle cx="680" cy="80" r="5" fill="currentColor" fill-opacity=".2"/>
+    <text x="680" y="55" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--text-muted)">Saturday</text>
+    <text x="680" y="43" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">D+1</text>
+  </svg>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: THE MARKET
+═══════════════════════════════════════════ -->
+<h2>2. How the Electricity Market Works</h2>
+
+<p>Electricity cannot be stored cheaply at scale. Every second, the amount generated must exactly match the amount consumed. To coordinate this, Germany runs a <strong>day-ahead auction</strong> called EPEX SPOT.</p>
+
+<h3>The auction process</h3>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Time</th><th>What Happens</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono">D−1, 09:00</td>
+      <td>Weather forecasts for day D are published. Market participants start building their bids.</td>
+    </tr>
+    <tr>
+      <td class="mono">D−1, 12:00</td>
+      <td><strong>Auction closes.</strong> All bids must be submitted. The market algorithm matches supply and demand for each of the 24 hours of day D.</td>
+    </tr>
+    <tr>
+      <td class="mono">D−1, 12:42</td>
+      <td>Results published. 24 prices are fixed — one per hour. This is the day-ahead price.</td>
+    </tr>
+    <tr>
+      <td class="mono">Day D, 00:00</td>
+      <td>Electricity delivery begins. Generators produce, consumers consume, according to contracts settled at the auction price.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout yellow">
+  <strong>Why the price varies by hour:</strong> At 3 AM, most factories are closed, demand is low, renewables are producing → price is cheap. At 6 PM on a cold winter evening, everyone is cooking, heating, and factories are running → demand spikes, expensive gas plants turn on → price is high.
+</div>
+
+<h3>What drives the price</h3>
+
+<p>Think of electricity like a marketplace: price = what sellers need to be paid for the last unit of electricity to meet demand.</p>
+
+<ul>
+  <li><strong>Solar is sunny:</strong> free electricity floods the grid → price drops, sometimes goes negative</li>
+  <li><strong>Strong wind:</strong> wind turbines generate for near-zero cost → price falls</li>
+  <li><strong>No wind, no sun:</strong> gas power plants must run → price rises (gas is expensive)</li>
+  <li><strong>Public holiday:</strong> factories shut down → demand drops → price falls</li>
+  <li><strong>Cold Monday morning:</strong> factories restart, heating peaks → demand spikes → price rises</li>
+</ul>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: WHAT WE PREDICT
+═══════════════════════════════════════════ -->
+<h2>3. What the Model Predicts — With a Concrete Example</h2>
+
+<p>It is <strong>Thursday, 10:00 AM</strong>. The auction closes in 2 hours. Your model must output 24 numbers for Friday.</p>
+
+<div class="price-diagram">
+  <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+    <!-- Grid lines -->
+    <line x1="50" y1="20" x2="50" y2="180" stroke="currentColor" stroke-opacity=".1"/>
+    <line x1="50" y1="180" x2="700" y2="180" stroke="currentColor" stroke-opacity=".1"/>
+    <line x1="50" y1="130" x2="700" y2="130" stroke="currentColor" stroke-opacity=".06"/>
+    <line x1="50" y1="80" x2="700" y2="80" stroke="currentColor" stroke-opacity=".06"/>
+
+    <!-- Y-axis labels -->
+    <text x="40" y="184" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">0</text>
+    <text x="40" y="134" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">50</text>
+    <text x="40" y="84" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">100</text>
+    <text x="40" y="34" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--text-muted)">140</text>
+
+    <!-- Price bars — hourly forecast values -->
+    <!-- Prices roughly: night cheap, morning rises, solar dip midday, evening peak, back down -->
+    <!-- data: [52,48,45,43,47,58,78,92,88,82,72,60,54,56,63,78,95,110,105,88,72,60,55,50] -->
+    <g fill="var(--blue)" fill-opacity=".7">
+      <rect x="55"  y="109" width="24" height="71"/> <!-- 0: 52 -->
+      <rect x="83"  y="116" width="24" height="64"/> <!-- 1: 48 -->
+      <rect x="111" y="122" width="24" height="58"/> <!-- 2: 45 -->
+      <rect x="139" y="125" width="24" height="55"/> <!-- 3: 43 -->
+      <rect x="167" y="119" width="24" height="61"/> <!-- 4: 47 -->
+      <rect x="195" y="98"  width="24" height="82"/> <!-- 5: 58 -->
+      <rect x="223" y="70"  width="24" height="110"/> <!-- 6: 78 -->
+      <rect x="251" y="55"  width="24" height="125"/> <!-- 7: 92 -->
+      <rect x="279" y="59"  width="24" height="121"/> <!-- 8: 88 -->
+      <rect x="307" y="63"  width="24" height="117"/> <!-- 9: 82 -->
+      <rect x="335" y="77"  width="24" height="103"/> <!-- 10: 72 -->
+      <rect x="363" y="92"  width="24" height="88"/>  <!-- 11: 60 -->
+      <rect x="391" y="101" width="24" height="79"/>  <!-- 12: 54, solar dip -->
+      <rect x="419" y="100" width="24" height="80"/>  <!-- 13: 56 -->
+      <rect x="447" y="92"  width="24" height="88"/>  <!-- 14: 63 -->
+      <rect x="475" y="70"  width="24" height="110"/> <!-- 15: 78 -->
+      <rect x="503" y="50"  width="24" height="130"/> <!-- 16: 95 -->
+      <rect x="531" y="28"  width="24" height="152" fill="var(--accent)" fill-opacity=".8"/> <!-- 17: 110 PEAK -->
+      <rect x="559" y="35"  width="24" height="145" fill="var(--accent)" fill-opacity=".8"/> <!-- 18: 105 -->
+      <rect x="587" y="57"  width="24" height="123"/> <!-- 19: 88 -->
+      <rect x="615" y="77"  width="24" height="103"/> <!-- 20: 72 -->
+      <rect x="643" y="92"  width="24" height="88"/>  <!-- 21: 60 -->
+      <rect x="671" y="101" width="24" height="79"/>  <!-- 22: 55 -->
+    </g>
+
+    <!-- Hour labels (selected) -->
+    <text x="67"  y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--text-muted)">00</text>
+    <text x="263" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--text-muted)">07</text>
+    <text x="403" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--text-muted)">12</text>
+    <text x="543" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--accent)" font-weight="500">17</text>
+    <text x="683" y="197" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--text-muted)">22</text>
+
+    <!-- Annotations -->
+    <text x="403" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--text-muted)">Solar dip</text>
+    <text x="543" y="20" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--accent)">Evening peak</text>
+    <text x="543" y="13" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--accent)">110 €/MWh</text>
+
+    <!-- Y axis label -->
+    <text x="14" y="110" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--text-muted)" transform="rotate(-90,14,110)">Price (€/MWh)</text>
+    <!-- X axis label -->
+    <text x="375" y="212" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="var(--text-muted)">Hour of day (Friday)</text>
+  </svg>
+  <p style="font-size:.8rem;color:var(--text-muted);text-align:center;margin-top:4px;">Example forecast output: 24 hourly prices for Friday. Evening hours 17–18 are most expensive.</p>
+</div>
+
+<div class="codeblock"><span class="cmt"># Your model's output for Friday — 24 numbers</span>
+forecast = {
+    "Fri 00:00": <span class="num">52</span>,   <span class="cmt"># €/MWh — cheap, nobody is awake</span>
+    "Fri 03:00": <span class="num">43</span>,   <span class="cmt"># cheapest hour — strong night wind</span>
+    "Fri 07:00": <span class="num">92</span>,   <span class="cmt"># morning ramp — factories start up</span>
+    "Fri 12:00": <span class="num">54</span>,   <span class="cmt"># solar peak — sun floods grid</span>
+    "Fri 17:00": <span class="num">110</span>,  <span class="cmt"># evening peak — gas plants running</span>
+    "Fri 22:00": <span class="num">55</span>,   <span class="cmt"># back to cheap — day winding down</span>
+    <span class="cmt"># ... 18 more hours</span>
+}</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: INPUTS — WHAT DATA WE USE
+═══════════════════════════════════════════ -->
+<h2>4. What Data the Model Uses as Inputs</h2>
+
+<p>To make a prediction for <strong>Friday at 17:00</strong>, you can only use data that existed on <strong>Thursday morning before noon</strong>. This is the central rule.</p>
+
+<div class="leakage-box">
+  <div class="leakage-row">
+    <div class="leakage-verdict verdict-ok">✓ SAFE</div>
+    <div>
+      <div class="leakage-text">Price at same hour last week (Wednesday 17:00)</div>
+      <div class="leakage-reason">168 hours ago — definitely known by Thursday morning</div>
+    </div>
+  </div>
+  <div class="leakage-row">
+    <div class="leakage-verdict verdict-ok">✓ SAFE</div>
+    <div>
+      <div class="leakage-text">Weather forecast for Friday issued Thursday morning</div>
+      <div class="leakage-reason">Open-Meteo publishes forecasts daily — this is what you'd have at bid time</div>
+    </div>
+  </div>
+  <div class="leakage-row">
+    <div class="leakage-verdict verdict-ok">✓ SAFE</div>
+    <div>
+      <div class="leakage-text">Calendar info: it's a Friday, no public holiday</div>
+      <div class="leakage-reason">Known infinitely in advance</div>
+    </div>
+  </div>
+  <div class="leakage-row">
+    <div class="leakage-verdict verdict-bad">✗ CHEAT</div>
+    <div>
+      <div class="leakage-text">Actual solar generation on Friday at 12:00</div>
+      <div class="leakage-reason">You don't have this until Friday itself — using it inflates accuracy artificially</div>
+    </div>
+  </div>
+  <div class="leakage-row">
+    <div class="leakage-verdict verdict-bad">✗ CHEAT</div>
+    <div>
+      <div class="leakage-text">Actual price at Friday 16:00 (to predict Friday 17:00)</div>
+      <div class="leakage-reason">The auction hasn't happened yet — this is the future</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>This is called look-ahead leakage.</strong> If you accidentally use future data, your model looks accurate in testing but fails completely in production. Preventing this is the most important engineering decision in the project.
+</div>
+
+<h3>Complete Feature Table</h3>
+
+<div class="feature-row">
+  <div class="feature-label">price_lag168h</div>
+  <div class="feature-desc">Price at the exact same hour exactly 1 week ago. The strongest single predictor — electricity prices have strong weekly cycles.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">price_lag48h</div>
+  <div class="feature-desc">Price 2 days ago (same hour). 48h is the minimum safe lag — guaranteed to be known before the auction closes.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">wind_speed_100m</div>
+  <div class="feature-desc">Forecast wind speed at 100m height (where turbines sit) for 5 German locations. High wind = cheap electricity.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">shortwave_radiation</div>
+  <div class="feature-desc">Forecast solar radiation. High radiation = solar panels produce more = price falls. Especially powerful in summer afternoons.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">hour_sin / hour_cos</div>
+  <div class="feature-desc">The hour of day encoded as a circle (sin and cos), so the model knows hour 23 is close to hour 0 — which a plain number doesn't convey.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">is_holiday</div>
+  <div class="feature-desc">German public holiday flag. Holidays behave like Sundays: factories closed, demand low, prices lower.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">residual_load_lag48h</div>
+  <div class="feature-desc">Residual load = grid demand minus renewables, 2 days ago. When residual load is high, gas plants must run, price goes up.</div>
+</div>
+<div class="feature-row">
+  <div class="feature-label">price_roll168_mean</div>
+  <div class="feature-desc">Rolling 7-day average price (computed from 48h-shifted data). Captures the current price regime — helps the model know if this is a generally expensive or cheap week.</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: BENEFICIARIES
+═══════════════════════════════════════════ -->
+<h2>5. Who Benefits and How</h2>
+
+<p>The 24-number forecast output is useful to multiple market participants. Each uses it differently.</p>
+
+<div class="bene-grid">
+
+  <div class="bene-card">
+    <span class="icon">🏭</span>
+    <div class="who">Large Industrial Consumer</div>
+    <span class="tag-primary">★ PRIMARY</span>
+    <p class="how">Steel plants, cement factories, aluminium smelters consume thousands of MWh per day. They can shift flexible processes to cheap hours.</p>
+    <div class="example">
+      Forecast: 03:00 = €43/MWh<br>
+      Forecast: 17:00 = €110/MWh<br>
+      → Run melting furnaces at 03:00<br>
+      → Reduce load at 17:00<br>
+      Saving: ~€67/MWh × 5,000 MWh<br>
+      = €335,000 saved <em>per day</em>
+    </div>
+  </div>
+
+  <div class="bene-card">
+    <span class="icon">📈</span>
+    <div class="who">Energy Trader</div>
+    <span class="tag-primary">★ PRIMARY</span>
+    <p class="how">Traders buy electricity cheap and sell it expensive, or hedge price risk for their clients. Accuracy = profit.</p>
+    <div class="example">
+      Market prices Friday 17:00 at €90<br>
+      Your model says: €110/MWh<br>
+      → Trader buys contract at €90<br>
+      → Sells at auction for €110<br>
+      Profit: €20/MWh × position size
+    </div>
+  </div>
+
+  <div class="bene-card">
+    <span class="icon">🔋</span>
+    <div class="who">Battery Storage Operator</div>
+    <span class="tag-primary">★ PRIMARY</span>
+    <p class="how">Batteries charge when electricity is cheap, discharge when expensive. Pure price arbitrage — the forecast directly determines when to charge vs discharge.</p>
+    <div class="example">
+      Cheap window: 03:00–06:00<br>
+      → Charge battery at €43/MWh<br>
+      Expensive window: 17:00–19:00<br>
+      → Sell back at €110/MWh<br>
+      Gross margin: €67/MWh
+    </div>
+  </div>
+
+  <div class="bene-card">
+    <span class="icon">⚡</span>
+    <div class="who">Gas Power Plant Owner</div>
+    <span class="tag-secondary">SECONDARY</span>
+    <p class="how">Gas plants are expensive to run (fuel cost ~€80/MWh). They only run when the market price exceeds their running cost. The forecast tells them when to switch on.</p>
+    <div class="example">
+      Running cost: €80/MWh<br>
+      Forecast 17:00: €110/MWh<br>
+      → Start plant at 16:00 (warm-up)<br>
+      → Sell at 17:00<br>
+      Profit: €30/MWh × output
+    </div>
+  </div>
+
+  <div class="bene-card">
+    <span class="icon">☀️</span>
+    <div class="who">Wind / Solar Farm Owner</div>
+    <span class="tag-secondary">SECONDARY</span>
+    <p class="how">Renewable generators can choose to store energy (if they have a battery) or sell directly. The forecast helps them decide when to sell vs when to hold.</p>
+    <div class="example">
+      Solar producing at 13:00 = €54<br>
+      Forecast 17:00 = €110/MWh<br>
+      → Store energy from 13:00<br>
+      → Release to grid at 17:00<br>
+      Extra revenue: €56/MWh
+    </div>
+  </div>
+
+  <div class="bene-card">
+    <span class="icon">🏢</span>
+    <div class="who">Utilities / Grid Operators</div>
+    <span class="tag-secondary">SECONDARY</span>
+    <p class="how">Grid operators need to plan capacity — how much backup reserve to hold ready. A forecast of an expensive evening peak tells them to keep more gas capacity on standby.</p>
+    <div class="example">
+      Forecast: high evening spike<br>
+      → Hold extra reserve capacity<br>
+      → Avoid emergency imports<br>
+      → Prevent grid instability
+    </div>
+  </div>
+
+</div>
+
+<div class="callout green">
+  <strong>Who does NOT benefit:</strong> Regular households pay a fixed retail electricity rate. The wholesale day-ahead price does not reach them directly — their price is set months or years in advance by their energy provider. This may change with smart meters and dynamic tariffs, but is not the case today for most consumers.
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6: WHY THIS IS HARD
+═══════════════════════════════════════════ -->
+<h2>6. Why This Problem Is Technically Hard</h2>
+
+<p>This is not a standard regression problem. Three issues make it genuinely difficult:</p>
+
+<h3>Problem 1 — Look-ahead leakage</h3>
+<p>The most common mistake in energy forecasting. You only know <em>forecasts</em> of tomorrow's weather — not what the weather will actually be. Using actual observed weather looks like a small detail but inflates model accuracy by 30–50%. We run both versions and report the gap as an "oracle experiment."</p>
+
+<h3>Problem 2 — Non-stationarity</h3>
+<p>The electricity market in 2025 looks completely different from 2019. Solar capacity has tripled. Gas prices spiked in 2022 (Russia-Ukraine war) reaching 600+ €/MWh. A model trained on pre-2022 data will badly underestimate tail risk. You must decide explicitly: train through the crisis, exclude it, or down-weight it.</p>
+
+<div class="callout yellow">
+  <strong>2022 price spike:</strong> From February 2022 to mid-2023, German electricity prices were 5–10× their historical average. A seasonal-naive model trained before 2022 would predict €80/MWh when the actual price was €500/MWh. This is not noise — it's a structural regime shift.
+</div>
+
+<h3>Problem 3 — Negative prices</h3>
+<p>On sunny, windy Sundays, Germany produces more electricity than it can consume. The price goes negative — producers pay consumers to take the electricity. This breaks standard forecasting assumptions: you cannot log-transform negative prices, and MAPE (a common metric) becomes meaningless near zero. We use MAE as the primary metric instead.</p>
+
+<div class="metric-row">
+  <div class="metric-tile">
+    <div class="val">~55k</div>
+    <div class="lbl">hours of training data (2019–today)</div>
+  </div>
+  <div class="metric-tile">
+    <div class="val">24</div>
+    <div class="lbl">prices predicted per day</div>
+  </div>
+  <div class="metric-tile">
+    <div class="val">48h</div>
+    <div class="lbl">minimum safe lag on any feature</div>
+  </div>
+  <div class="metric-tile">
+    <div class="val">MAE</div>
+    <div class="lbl">primary metric (€/MWh)</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7: THE MODEL PIPELINE
+═══════════════════════════════════════════ -->
+<h2>7. The Model Pipeline (Simplified)</h2>
+
+<div class="timeline-diagram">
+  <svg viewBox="0 0 720 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Arrow line -->
+    <line x1="30" y1="50" x2="690" y2="50" stroke="currentColor" stroke-opacity=".15" stroke-width="2"/>
+
+    <!-- Step 1 -->
+    <rect x="30" y="28" width="110" height="44" rx="6" fill="var(--bg-code)" stroke="var(--border)"/>
+    <text x="85" y="47" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Historical</text>
+    <text x="85" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Prices</text>
+
+    <!-- Arrow -->
+    <polygon points="153,46 145,42 145,58" fill="var(--text-muted)" fill-opacity=".4"/>
+    <line x1="140" y1="50" x2="152" y2="50" stroke="var(--text-muted)" stroke-opacity=".4"/>
+
+    <!-- Step 2 -->
+    <rect x="155" y="28" width="110" height="44" rx="6" fill="var(--bg-code)" stroke="var(--border)"/>
+    <text x="210" y="47" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Weather</text>
+    <text x="210" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Forecasts</text>
+
+    <!-- Arrow -->
+    <polygon points="278,46 270,42 270,58" fill="var(--text-muted)" fill-opacity=".4"/>
+    <line x1="265" y1="50" x2="277" y2="50" stroke="var(--text-muted)" stroke-opacity=".4"/>
+
+    <!-- Step 3 -->
+    <rect x="280" y="28" width="110" height="44" rx="6" fill="var(--bg-code)" stroke="var(--border)"/>
+    <text x="335" y="47" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Feature</text>
+    <text x="335" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Engineering</text>
+
+    <!-- Arrow -->
+    <polygon points="403,46 395,42 395,58" fill="var(--text-muted)" fill-opacity=".4"/>
+    <line x1="390" y1="50" x2="402" y2="50" stroke="var(--text-muted)" stroke-opacity=".4"/>
+
+    <!-- Step 4 -->
+    <rect x="405" y="28" width="110" height="44" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-opacity=".5"/>
+    <text x="460" y="47" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">LightGBM</text>
+    <text x="460" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">Model</text>
+
+    <!-- Arrow -->
+    <polygon points="528,46 520,42 520,58" fill="var(--text-muted)" fill-opacity=".4"/>
+    <line x1="515" y1="50" x2="527" y2="50" stroke="var(--text-muted)" stroke-opacity=".4"/>
+
+    <!-- Step 5 -->
+    <rect x="530" y="28" width="155" height="44" rx="6" fill="var(--green-soft)" stroke="var(--green)" stroke-opacity=".5"/>
+    <text x="607" y="47" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="var(--text)">24 Hourly Prices</text>
+    <text x="607" y="62" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="var(--green)">+ uncertainty intervals</text>
+  </svg>
+</div>
+
+<p>The model is trained on 6 years of hourly data. For each delivery day in the test period, it is retrained only on data <em>strictly before</em> that day (rolling-origin validation). This simulates real deployment: you never peek at the future during training.</p>
+
+<!-- ══════════════════════════════════════════
+     SECTION 8: HOW TO MEASURE SUCCESS
+═══════════════════════════════════════════ -->
+<h2>8. How We Measure Success</h2>
+
+<p>The baseline is the simplest possible forecast: <em>use the price at the same hour one week ago</em>. If our model cannot beat this, it has no value.</p>
+
+<table class="data-table">
+  <thead>
+    <tr><th>Model</th><th>MAE (€/MWh)</th><th>vs Baseline</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Seasonal Naive (same hour, 1 week ago)</td>
+      <td class="mono">~18–22</td>
+      <td>baseline</td>
+    </tr>
+    <tr>
+      <td>LEAR (Lasso on price lags only)</td>
+      <td class="mono">~14–17</td>
+      <td>~20% better</td>
+    </tr>
+    <tr>
+      <td>LightGBM (lags + calendar)</td>
+      <td class="mono">~10–13</td>
+      <td>~40% better</td>
+    </tr>
+    <tr>
+      <td><strong>LightGBM (lags + calendar + weather)</strong></td>
+      <td class="mono"><strong>~7–10</strong></td>
+      <td><strong>~50% better</strong></td>
+    </tr>
+    <tr>
+      <td>Oracle (same model, observed weather)</td>
+      <td class="mono">~4–7</td>
+      <td>ceiling — not achievable in production</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="font-size:.82rem;color:var(--text-muted);">
+  Note: These are illustrative ranges based on published literature. Your actual numbers will vary. Always fill in real numbers from your own backtest before using them anywhere.
+</p>
+
+<div class="callout blue">
+  <strong>What the oracle gap means in interviews:</strong> The difference between the oracle (observed weather) and regular model (forecast weather) tells you exactly how much accuracy is lost because weather forecasts are imperfect. This is not a flaw in your model — it's a fundamental limit of the information available before the auction closes. Understanding and quantifying this gap is what separates a thoughtful ML engineer from one who just runs sklearn.
+</div>
+
+<hr>
+
+<div class="footer">
+  Data source: Bundesnetzagentur | SMARD.de · Weather: Open-Meteo Historical Forecast API ·
+  German Day-Ahead Market: EPEX SPOT DE-LU bidding zone ·
+  All price figures are illustrative examples, not live data.
+</div>
+
+</body></html>

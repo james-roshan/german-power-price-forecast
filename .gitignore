@@ -1,0 +1,13 @@
+# data and generated artefacts (re-create with the download scripts and `depower run`)
+data/raw/
+data/processed/
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.jupyter_runtime/
+*.joblib
+.env
+.DS_Store
