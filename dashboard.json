@@ -1,9 +1,10 @@
 {
-  "updated_at_utc": "2026-10-09T13:19:31.608780+00:00",
+  "updated_at_utc": "2026-10-09T13:40:09.235470+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
-    "No fresh successful forecast (>36 hours)"
+    "No fresh successful forecast (>36 hours)",
+    "Latest pipeline failed; inspect GitHub Actions diagnostics"
   ],
   "drift": {},
   "forecasts": [],
@@ -684,12 +685,12 @@
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 48,
-    "load_mwh": 58,
-    "residual_load_mwh": 58,
-    "solar_mwh": 58,
-    "wind_onshore_mwh": 58,
-    "wind_offshore_mwh": 58
+    "load_mwh": 57,
+    "residual_load_mwh": 57,
+    "solar_mwh": 57,
+    "wind_onshore_mwh": 57,
+    "wind_offshore_mwh": 57
   },
   "model_versions": [],
-  "pipeline_status": "alert"
+  "pipeline_status": "failed"
 }
