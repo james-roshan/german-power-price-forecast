@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-10-09T13:40:09.235470+00:00",
+  "updated_at_utc": "2026-10-09T14:06:22.792256+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -9,10 +9,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-02T13:00:00.000Z",
-      "actual": 150.1
-    },
     {
       "target_time_utc": "2026-10-02T14:00:00.000Z",
       "actual": 181.03
@@ -680,6 +676,10 @@
     {
       "target_time_utc": "2026-10-09T12:00:00.000Z",
       "actual": 10.58
+    },
+    {
+      "target_time_utc": "2026-10-09T13:00:00.000Z",
+      "actual": 40.41
     }
   ],
   "comparison": [],
