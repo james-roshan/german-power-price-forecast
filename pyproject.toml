@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff", "jupyter", "nbformat", "nbclient", "ipykernel"]
+dev = ["pytest", "ruff", "jupyter", "nbformat", "nbclient", "ipykernel", "streamlit>=1.50,<2", "plotly>=6,<7", "PyYAML>=6,<7"]
 
 [project.scripts]
 depower = "depower.cli:main"

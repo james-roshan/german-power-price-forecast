@@ -7,6 +7,11 @@ information available before the 11:00 (Europe/Berlin) cutoff on the day before 
 
 ## Results (retrospective, 8,760 hours: 2025-09-25 → 2026-09-24)
 
+**Benchmark provenance:** the numbers below predate the production DST correction.
+On the last hour of a 25-hour autumn day, the old 24-hour price lag could use a
+delivery-day price. Production now uses 25 hours for that one interval. These
+preserved results must be recomputed before claiming corrected-model accuracy.
+
 Rolling-origin evaluation: for each delivery day the model is trained only on earlier days
 (2-year window) and refit weekly (the selected model daily). Tuning used four development folds
 that all precede the test year.
@@ -68,7 +73,9 @@ docs/             ROADMAP.md (original plan), project_overview.html, figures/
 
 `notebooks/end_to_end_forecast.ipynb` is the self-contained walkthrough; the `depower` package is
 the reusable version of the same code. Running `depower run` reproduces the notebook's result
-tables exactly (verified: differences of 0.0 in all model MAE/RMSE, CV scores and interval summary).
+tables exactly in the original version (verified then: differences of 0.0 in all
+model MAE/RMSE, CV scores and interval summary). The production DST correction
+requires rerunning affected dates; original notebook outputs are preserved.
 
 ## Data and methodology
 
@@ -90,4 +97,70 @@ Cite SMARD as "Bundesnetzagentur | SMARD.de".
 
 Five weather points are coarse regional proxies; load/renewable forecasts, outages, fuel and carbon
 prices are not integrated (`depower.covariates` provides the as-of selection helper for them). The live
-workflow in `depower.live` is tested offline only; no live results are claimed.
+workflow is now wrapped by `depower.production`. Source ingestion and local app
+startup are verified; no genuine live forecast, remote CI or public deployment is claimed.
+
+## Production application
+
+The application reuses the selected LightGBM model, hourly next-day horizon,
+730-day training window and daily refitting. A replay artifact is never used as a
+current live model. UTC target timestamps and Berlin issue cutoffs remain distinct.
+
+```mermaid
+flowchart LR
+    S[SMARD market history] --> V[UTC schema and unit validation]
+    W[Open-Meteo 48 h lead weather] --> V
+    G[GitHub Actions: Berlin schedule] --> V
+    V --> F[Existing calendar and lag features]
+    F --> M[Selected LightGBM: daily fit]
+    M --> C{Persist before 11:00 Berlin?}
+    C -->|Yes| L[Immutable live forecast bundles]
+    C -->|No| A[Failure diagnostics and GitHub alerts]
+    S --> E[Match completed forecast and actual intervals]
+    L --> E
+    E --> H[MAE, RMSE, bias, rolling metrics and drift]
+    L --> B[forecast-data branch: durable CSV and JSON]
+    H --> B
+    B --> D[Read-only Streamlit Community Cloud dashboard]
+```
+
+Five views cover forecast overview, predicted vs actual, model performance,
+data/model monitoring and architecture. Empty and stale data are visible statuses;
+historical experiments are kept separate from live evidence. No MAPE or price clipping.
+
+```bash
+pip install -r requirements-dev.txt  # deployment environment: Python 3.12
+python -m depower.production seed --state data/state  # once, with downloaded raw inputs
+python -m depower.production forecast --state data/state --runtime data/runtime-first
+python -m depower.production monitor --state data/state --runtime data/runtime-next
+streamlit run app.py
+```
+
+Forecasts must run before **11:00 Europe/Berlin**; each invocation requires a new
+empty runtime directory. The scheduled workflow runs at **09:17 and 10:17 Berlin**
+(idempotent retry), with **18:17** monitoring. GitHub scheduling is best-effort;
+late forecasts are withheld. Automatic work: capture, validation, daily fitting,
+immutable issue, matching, metrics, alerts and state commits. Manual work: initial
+data-branch setup, account authentication, approved publishing, notifications,
+candidate configuration promotion and periodic storage review.
+
+Runtime captures and fitted artifacts are retained for seven days by Actions;
+CSV histories and small forecast bundles persist independently on `forecast-data`.
+The dashboard reads its JSON export after restarts and never trains or loads a
+remote pickle. Required live inputs fail closed; cloud gaps use native LightGBM
+handling. Historical revision/publication limitations remain documented.
+
+Meaningful additions: `app.py`, `depower.production`, `depower.monitoring`,
+`depower.validation`, frozen selection/weather metadata in `production/`, controlled
+requirements, forecast workflow, Streamlit theme and production regression tests.
+
+- [Assessment and implementation decisions](docs/assessment.md)
+- [Exact local, GitHub and Streamlit deployment steps](docs/deployment.md)
+- [Retraining acceptance, promotion and rollback](docs/retraining.md)
+- [Verification and deployment status](docs/verification.md)
+
+**Deployment status:** local only; no commit/push or verified public URL yet.
+Target recurring cost is **€0** for modest non-commercial use with a public
+repository's standard runners, Streamlit Community Cloud and Open-Meteo's free
+API. Quotas, no-SLA operation and annual storage maintenance are discussed in
+the runbook. Private-repository runner quotas must be checked before publishing.

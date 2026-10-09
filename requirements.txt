@@ -1,0 +1,13 @@
+# Verified locally with Python 3.12; controlled direct deployment dependencies.
+pandas==3.0.6
+numpy==2.5.3
+pyarrow==25.0.1
+requests==2.34.2
+holidays==0.105
+scikit-learn==1.9.1
+lightgbm==4.7.0
+matplotlib==3.11.2
+joblib==1.6.0
+streamlit==1.65.0
+plotly==6.9.0
+-e .

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 350" role="img" aria-label="Forecasting and monitoring architecture">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16b8a6"/></marker></defs>
+<rect width="1040" height="350" rx="20" fill="#0e1726"/>
+<g fill="#17263b" stroke="#16b8a6" stroke-width="2">
+<rect x="25" y="45" width="220" height="85" rx="12"/>
+<rect x="280" y="45" width="220" height="85" rx="12"/>
+<rect x="535" y="45" width="220" height="85" rx="12"/>
+<rect x="790" y="45" width="220" height="85" rx="12"/>
+<rect x="790" y="220" width="220" height="85" rx="12"/>
+<rect x="535" y="220" width="220" height="85" rx="12"/>
+<rect x="280" y="220" width="220" height="85" rx="12"/>
+<rect x="25" y="220" width="220" height="85" rx="12"/>
+</g>
+<g fill="none" stroke="#16b8a6" stroke-width="3" marker-end="url(#arrow)">
+<path d="M245 87H275"/><path d="M500 87H530"/><path d="M755 87H785"/>
+<path d="M900 130V215"/><path d="M790 262H760"/><path d="M535 262H505"/><path d="M280 262H250"/>
+</g>
+<g fill="#edf4fa" font-family="Arial,sans-serif" text-anchor="middle" font-size="17">
+<text x="135" y="80">SMARD + Open-Meteo</text><text x="135" y="107" font-size="14">Capture before cutoff</text>
+<text x="390" y="80">Validate UTC inputs</text><text x="390" y="107" font-size="14">Schema, units, missingness</text>
+<text x="645" y="80">Existing features</text><text x="645" y="107" font-size="14">Calendar, safe lags, weather</text>
+<text x="900" y="80">Selected LightGBM</text><text x="900" y="107" font-size="14">730-day window, daily fit</text>
+<text x="900" y="255">Immutable forecasts</text><text x="900" y="282" font-size="14">Issued before 11:00 Berlin</text>
+<text x="645" y="255">Match later actuals</text><text x="645" y="282" font-size="14">Metrics + drift + alerts</text>
+<text x="390" y="255">Persistent data branch</text><text x="390" y="282" font-size="14">CSV histories + JSON export</text>
+<text x="135" y="255">Streamlit dashboard</text><text x="135" y="282" font-size="14">Read-only public portfolio</text>
+<text x="520" y="181" font-size="15" fill="#97b2cc">GitHub Actions schedules and serializes production runs · GitHub notifications report failures</text>
+</g></svg>

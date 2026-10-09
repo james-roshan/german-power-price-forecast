@@ -19,8 +19,14 @@ import pandas as pd
 from .config import SMARD_SERIES, TARGET, TZ
 from .features import enhanced_features
 from .metrics import regression_metrics
+from .validation import validate_frame, validate_weather_units
 
 SMARD_BASE = "https://www.smard.de/app/chart_data"
+
+
+def utc_now() -> pd.Timestamp:
+    """Single production clock seam for deterministic deadline tests."""
+    return pd.Timestamp.now(tz="UTC")
 
 
 @dataclass
@@ -113,7 +119,7 @@ def save_json_exclusive(path, document) -> None:
 
 def fetch_recorded_json(session, url: str, params, folder: Path, label: str):
     response = session.get(url, params=params, timeout=45)
-    received_at = pd.Timestamp.now(tz="UTC")
+    received_at = utc_now()
     response.raise_for_status()
     payload = response.json()
     save_json_exclusive(Path(folder) / f"{label}.json", {
@@ -126,12 +132,13 @@ def collect_live_inputs(ctx: LiveContext, folder: Path, session=None):
     """Refresh the last 7 days of SMARD and 48-hour-lead Open-Meteo data, recording every response."""
     import requests
 
-    now = pd.Timestamp.now(tz="UTC")
+    now = utc_now()
     tomorrow = now.tz_convert(TZ).normalize() + pd.DateOffset(days=1)
     live = ctx.live_dir
     market_base = pd.read_parquet(live / "market_latest.parquet") if (live / "market_latest.parquet").exists() else ctx.market.copy()
     weather_base = pd.read_parquet(live / "weather_latest.parquet") if (live / "weather_latest.parquet").exists() else ctx.forecast.copy()
-    start = min(market_base.index.max(), weather_base.index.max()) - pd.Timedelta(days=7)
+    # Weather may extend into the future; freshness is anchored to the current clock.
+    start = min(market_base.index.max(), weather_base.index.max(), now) - pd.Timedelta(days=7)
     meta = ctx.forecast_meta
     own_session = session is None
     session = session or requests.Session()
@@ -148,6 +155,8 @@ def collect_live_inputs(ctx: LiveContext, folder: Path, session=None):
             df = pd.DataFrame(rows, columns=["timestamp", "value"])
             if df.empty:
                 raise ValueError(f"No refreshed market rows for {name}")
+            if (df.groupby("timestamp").value.nunique(dropna=False) > 1).any():
+                raise ValueError(f"Conflicting duplicate market observations: {name}")
             df["timestamp"] = pd.to_datetime(df.timestamp, unit="ms", utc=True)
             series[name] = df.drop_duplicates("timestamp").set_index("timestamp").value.sort_index()
         recent_market = pd.DataFrame(series)
@@ -159,8 +168,11 @@ def collect_live_inputs(ctx: LiveContext, folder: Path, session=None):
                       "end_date": (tomorrow + pd.DateOffset(days=1)).strftime("%Y-%m-%d"),
                       "timezone": "UTC", "temperature_unit": "celsius", "wind_speed_unit": "kmh"}
             payload = fetch_recorded_json(session, meta["endpoint"], params, folder, f"weather_{location}")
+            validate_weather_units(payload, meta["variables"], meta["units"])
             hourly = pd.DataFrame(payload["hourly"])
             hourly.index = pd.to_datetime(hourly.pop("time"), utc=True)
+            if hourly.index.has_duplicates:
+                raise ValueError(f"Duplicate weather timestamps: {location}")
             pieces.append(hourly.rename(columns={f"{v}_previous_day2": f"{location}__{v}" for v in meta["variables"]}))
     finally:
         if own_session:
@@ -170,6 +182,12 @@ def collect_live_inputs(ctx: LiveContext, folder: Path, session=None):
     recent_weather = pd.concat(pieces, axis=1)
     merged_market = pd.concat([market_base.loc[~market_base.index.isin(recent_market.index)], recent_market]).sort_index()
     merged_weather = pd.concat([weather_base.loc[~weather_base.index.isin(recent_weather.index)], recent_weather]).sort_index()
+    # Represent missing hours explicitly, without imputing any values.
+    merged_market = merged_market.asfreq("h")
+    merged_weather = merged_weather.asfreq("h")
+    validate_frame(merged_market, list(SMARD_SERIES), "market")
+    weather_columns = [f"{site}__{v}" for site in meta["locations"] for v in meta["variables"]]
+    validate_frame(merged_weather, weather_columns, "weather")
     merged_market.to_parquet(live / "market_latest.parquet")
     merged_weather.to_parquet(live / "weather_latest.parquet")
     merged_market.to_parquet(Path(folder) / "market_snapshot.parquet")
@@ -180,7 +198,7 @@ def collect_live_inputs(ctx: LiveContext, folder: Path, session=None):
 def score_live_ledger(ctx: LiveContext, actual_prices: pd.Series, as_of=None) -> pd.DataFrame:
     """Score every issued live forecast whose delivery hours are complete and now observed."""
     live = ctx.live_dir
-    as_of = pd.Timestamp.now(tz="UTC") if as_of is None else pd.Timestamp(as_of).tz_convert("UTC")
+    as_of = utc_now() if as_of is None else pd.Timestamp(as_of).tz_convert("UTC")
     rows = []
     for record_path in sorted(live.glob("forecast_*.json")):
         record = json.loads(record_path.read_text(encoding="utf-8"))
@@ -207,7 +225,7 @@ def run_live_cycle(ctx: LiveContext, session=None):
     live = ctx.live_dir
     live.mkdir(parents=True, exist_ok=True)
     spec = ctx.selected_spec
-    started = pd.Timestamp.now(tz="UTC")
+    started = utc_now()
     day = started.tz_convert(TZ).normalize() + pd.DateOffset(days=1)
     cutoff = issue_cutoff(day)
     if started >= cutoff:
@@ -220,6 +238,12 @@ def run_live_cycle(ctx: LiveContext, session=None):
     folder.mkdir()
     try:
         fresh_market, fresh_weather = collect_live_inputs(ctx, folder, session)
+        if fresh_market.reindex(delivery_hours(day))[TARGET].notna().any():
+            raise ValueError("Delivery-day prices are already known; live forecast withheld")
+        # Only prices may refer to un-delivered hours: day-ahead prices are public.
+        # Actual load/generation values received in advance are inadmissible.
+        non_price = [c for c in fresh_market if c != TARGET]
+        fresh_market.loc[fresh_market.index + pd.Timedelta(hours=1) > utc_now(), non_price] = np.nan
         X_future, training_features = prospective_features(fresh_market, fresh_weather, day,
                                                            ctx.feature_columns, ctx.cloud_columns)
         columns = ctx.columns
@@ -242,32 +266,47 @@ def run_live_cycle(ctx: LiveContext, session=None):
             model_file = f"model_{started.strftime('%Y%m%dT%H%M%SZ')}_{uuid.uuid4().hex[:8]}.joblib"
             joblib.dump(model, live / model_file)
             state = {"fit_day": day_key, "model_file": model_file, "config_hash": config_hash,
+                     "model_sha256": hashlib.sha256((live / model_file).read_bytes()).hexdigest(),
                      "train_start": str(train.index.min()), "train_end": str(train.index.max()),
                      "n_train": len(train)}
             state_path.write_text(json.dumps(state, indent=2), encoding="utf-8")
         else:
+            artifact = live / state["model_file"]
+            if state.get("model_sha256") != hashlib.sha256(artifact.read_bytes()).hexdigest():
+                raise ValueError("Local model artifact integrity check failed")
             model = joblib.load(live / state["model_file"])
-        if pd.Timestamp.now(tz="UTC") >= cutoff:
+        if utc_now() >= cutoff:
             raise RuntimeError("Collection/training finished after cutoff; forecast withheld.")
         output = pd.DataFrame({"prediction": model.predict(X_future[columns]),
                                "weekly_baseline": X_future[f"{TARGET}_lag168h"],
                                "previous_day_baseline": X_future[f"{TARGET}_lag24h"]}, index=X_future.index)
         if not np.isfinite(output.to_numpy()).all():
             raise ValueError("Non-finite predictions; forecast withheld.")
+        output["horizon_hours"] = (output.index - started).total_seconds() / 3600
         prediction_file = f"predictions_{day_key}.parquet"
         if (live / prediction_file).exists():
             raise FileExistsError("Prediction artifact already exists; inspect the previous incomplete cycle.")
         X_future.to_parquet(folder / "forecast_features.parquet")
         output.to_parquet(live / prediction_file)
-        issued = pd.Timestamp.now(tz="UTC")
+        issued = utc_now()
         if issued >= cutoff:
             raise RuntimeError("Persistence passed the cutoff; this artifact is not a valid live forecast.")
         save_json_exclusive(record_file, {
             "mode": "live", "delivery_day": day_key, "issued_at_utc": issued, "cutoff_utc": cutoff,
+            "status": "issued", "run_id": folder.name, "unit": "EUR/MWh",
+            "horizon": "next Berlin delivery day; hourly; 23/24/25 intervals",
+            "feature_sha256": hashlib.sha256((folder / "forecast_features.parquet").read_bytes()).hexdigest(),
+            "input_sha256": {name: hashlib.sha256((folder / f"{name}_snapshot.parquet").read_bytes()).hexdigest()
+                             for name in ["market", "weather"]},
             "prediction_file": prediction_file,
             "prediction_sha256": hashlib.sha256((live / prediction_file).read_bytes()).hexdigest(),
             "capture_directory": str(folder.relative_to(live)), "model_state": state,
             "configuration": config_payload, "weather_policy": ctx.forecast_meta.get("availability_note")})
+        if utc_now() >= cutoff:
+            record = json.loads(record_file.read_text(encoding="utf-8"))
+            record.update(mode="late_invalid", status="withheld")
+            record_file.write_text(json.dumps(record, indent=2), encoding="utf-8")
+            raise RuntimeError("Ledger persistence crossed cutoff; forecast withheld")
         save_json_exclusive(folder / "status.json", {"status": "issued", "issued_at_utc": issued})
         return output, score_live_ledger(ctx, fresh_market[TARGET])
     except Exception as exc:

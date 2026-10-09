@@ -64,7 +64,14 @@ def enhanced_features(market: pd.DataFrame, weather_forecast: pd.DataFrame | Non
     The 24-hour lag is *not* applied to load or generation, whose D-1 afternoon is unobserved.
     """
     frame = build_features(market, weather_forecast=weather_forecast)
-    frame[f"{TARGET}_lag24h"] = market[TARGET].asfreq("h").shift(24)
+    price = market[TARGET].asfreq("h")
+    lag24 = price.shift(24)
+    # On a 25-hour autumn delivery day the final hour's t-24 lies in
+    # that SAME delivery day, whose auction has not happened at issue time.
+    # Use t-25 for this one hour, keeping the original elapsed-hour lag otherwise.
+    local_days = price.index.tz_convert(TZ).date
+    lag_days = (price.index - pd.Timedelta(hours=24)).tz_convert(TZ).date
+    frame[f"{TARGET}_lag24h"] = lag24.where(local_days != lag_days, price.shift(25))
     return frame
 
 

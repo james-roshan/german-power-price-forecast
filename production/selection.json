@@ -1,0 +1,116 @@
+{
+  "created_at_utc": "2026-10-06T18:01:58.595559+00:00",
+  "selected_name": "Selected LightGBM daily",
+  "best_lgbm_trial": "LightGBM trial 00",
+  "best_lgbm_params": {
+    "n_estimators": 250,
+    "learning_rate": 0.05,
+    "num_leaves": 31,
+    "min_child_samples": 40,
+    "reg_lambda": 1.0,
+    "objective": "regression_l1",
+    "random_state": 42,
+    "n_jobs": 2,
+    "verbosity": -1
+  },
+  "selected_window_days": 730,
+  "selected_retrain_days": 1,
+  "selected_features": [
+    "hour",
+    "dow",
+    "month",
+    "is_weekend",
+    "is_holiday",
+    "hour_sin",
+    "hour_cos",
+    "doy_sin",
+    "doy_cos",
+    "price_eur_mwh_lag48h",
+    "price_eur_mwh_lag72h",
+    "price_eur_mwh_lag168h",
+    "price_eur_mwh_lag336h",
+    "load_mwh_lag48h",
+    "load_mwh_lag72h",
+    "load_mwh_lag168h",
+    "load_mwh_lag336h",
+    "residual_load_mwh_lag48h",
+    "residual_load_mwh_lag72h",
+    "residual_load_mwh_lag168h",
+    "residual_load_mwh_lag336h",
+    "solar_mwh_lag48h",
+    "solar_mwh_lag72h",
+    "solar_mwh_lag168h",
+    "solar_mwh_lag336h",
+    "wind_onshore_mwh_lag48h",
+    "wind_onshore_mwh_lag72h",
+    "wind_onshore_mwh_lag168h",
+    "wind_onshore_mwh_lag336h",
+    "wind_offshore_mwh_lag48h",
+    "wind_offshore_mwh_lag72h",
+    "wind_offshore_mwh_lag168h",
+    "wind_offshore_mwh_lag336h",
+    "price_roll24_mean",
+    "price_roll24_std",
+    "price_roll168_mean",
+    "north_sea_coast__temperature_2m",
+    "north_sea_coast__wind_speed_100m",
+    "north_sea_coast__shortwave_radiation",
+    "north_sea_coast__cloud_cover",
+    "brandenburg__temperature_2m",
+    "brandenburg__wind_speed_100m",
+    "brandenburg__shortwave_radiation",
+    "brandenburg__cloud_cover",
+    "ruhr__temperature_2m",
+    "ruhr__wind_speed_100m",
+    "ruhr__shortwave_radiation",
+    "ruhr__cloud_cover",
+    "bavaria__temperature_2m",
+    "bavaria__wind_speed_100m",
+    "bavaria__shortwave_radiation",
+    "bavaria__cloud_cover",
+    "baden_wuerttemberg__temperature_2m",
+    "baden_wuerttemberg__wind_speed_100m",
+    "baden_wuerttemberg__shortwave_radiation",
+    "baden_wuerttemberg__cloud_cover",
+    "price_eur_mwh_lag24h"
+  ],
+  "cv_folds": [
+    {
+      "fold": "1",
+      "start": "2024-11-01 00:00:00+01:00",
+      "stop": "2024-11-29 00:00:00+01:00"
+    },
+    {
+      "fold": "2",
+      "start": "2025-02-01 00:00:00+01:00",
+      "stop": "2025-03-01 00:00:00+01:00"
+    },
+    {
+      "fold": "3",
+      "start": "2025-05-01 00:00:00+02:00",
+      "stop": "2025-05-29 00:00:00+02:00"
+    },
+    {
+      "fold": "4",
+      "start": "2025-08-01 00:00:00+02:00",
+      "stop": "2025-08-29 00:00:00+02:00"
+    }
+  ],
+  "input_manifest": {
+    "market": {
+      "file": "data\\raw\\smard_sample.parquet",
+      "sha256": "3b43a706a14dbca277f3f9d01d1d66a1fcf0fde5af5f6629945666b1b3dd2abb"
+    },
+    "weather_archive": {
+      "file": "data\\raw\\weather_archive.parquet",
+      "sha256": "4a87e5e029a403a9351c612a2f9025bb3e5f1f166fbe9087bfccf5bc4c286783"
+    },
+    "weather_forecast": {
+      "file": "data\\raw\\weather_forecast.parquet",
+      "sha256": "22c8ed65cec69e0aa9d1e58f3818dc1e05c3e310f1e958ab092459fcc63cd51e"
+    }
+  },
+  "test_status": "Previously inspected retrospective benchmark; not a fresh holdout",
+  "live_status": "Implemented in depower.live; not exercised by this offline run",
+  "external_drivers": "Not integrated; as-of selection helper implemented"
+}

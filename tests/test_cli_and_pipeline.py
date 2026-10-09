@@ -47,6 +47,8 @@ def _real_root():
 @pytest.mark.skipif(_real_root() is None or not os.environ.get("DEPOWER_SMOKE"),
                     reason="set DEPOWER_SMOKE=1 and provide data/raw to run the end-to-end smoke test")
 def test_quick_pipeline_end_to_end(tmp_path):
+    import matplotlib
+    matplotlib.use("Agg")  # Headless execution on CI and minimal Windows Python installs.
     res = pipeline.run_pipeline(_real_root(), pipeline.RunConfig.quick(), tmp_path, verbose=False)
     assert (res.checks.result == "PASS").all() and len(res.checks) >= 10
     assert len(res.predictions) == 7 * 24
