@@ -1,5 +1,10 @@
 # German Day-Ahead Electricity Price Forecasting
 
+[Open the public dashboard](https://hpu4hyd22wxk8puvkmhww7.streamlit.app/)
+
+The dashboard is deployed. Live forecasts appear only after a successful
+pre-cutoff production run; no live forecast has been issued as of 2026-10-09.
+
 Forecast the 24 hourly day-ahead prices of the German–Luxembourg (DE-LU) bidding zone using only
 information available before the 11:00 (Europe/Berlin) cutoff on the day before delivery.
 
@@ -162,8 +167,9 @@ requirements, forecast workflow, Streamlit theme and production regression tests
 **Deployment status:** code pushed to `main` and persistent `forecast-data` branch
 created on 2026-10-09 with owner approval. GitHub CI passed on Linux; the remote
 monitor refreshed and persisted observations, with the expected no-live-forecast
-alert. Streamlit GitHub sign-in is complete and deployment awaits the owner's
-form submission. No public application URL is verified yet.
+alert. The public Streamlit dashboard is deployed at the link above. Its correct
+`app.py` entrypoint and runtime health are verified; the owner confirms it renders.
+The first genuine pre-cutoff forecast and public restart recovery remain to be verified.
 Target recurring cost is **€0** for modest non-commercial use with a public
 repository's standard runners, Streamlit Community Cloud and Open-Meteo's free
 API. Quotas, no-SLA operation and annual storage maintenance are discussed in

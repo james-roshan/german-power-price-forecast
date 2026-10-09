@@ -6,19 +6,22 @@ with source histories and an observations-only export. GitHub authentication is
 verified and the repository was already public; visibility was not changed.
 Remote CI passed on Linux. The remote monitor fetched and persisted observations
 and uploaded diagnostics; it exited with the expected missing-live-forecast alert.
-The published JSON was verified to return HTTP 200. The owner has signed into
-Streamlit and connected GitHub; deployment form submission is the remaining owner
-step. There is no verified public application URL yet.
+The published JSON was verified to return HTTP 200. The corrected dashboard is
+deployed at https://hpu4hyd22wxk8puvkmhww7.streamlit.app/ . Public metadata confirms
+`app.py`, Python 3.12, and Streamlit 1.65; runtime health returns `ok`. The owner
+confirms the dashboard renders. The first genuine pre-cutoff forecast and hosted
+restart recovery still need verification.
 
-### Current Streamlit configuration issue
+### Resolved Streamlit configuration issue
 
 The owner supplied
 `https://german-power-price-forecast-fuiwd7mymph2hfbf4cvpp9.streamlit.app/`.
 Read-only public hosting metadata confirms Python 3.12, but the deployed main
 module is **`src/depower/__init__.py`**, not **`app.py`**. The initializer only
 contains a package docstring, so a running Streamlit process displays a blank
-page. The actual proxied runtime health endpoint responds, but the dashboard
-entrypoint has not been deployed. Do not label this blank app a verified dashboard.
+page. This mistaken deployment was replaced with the corrected `app.py` deployment
+at https://hpu4hyd22wxk8puvkmhww7.streamlit.app/ . Preserve this diagnosis for future
+troubleshooting; the old blank app is not the portfolio dashboard.
 
 Create a corrected deployment using this precise GitHub file URL:
 

@@ -34,6 +34,18 @@ that docstring-only entrypoint. Runtime health alone is not dashboard verificati
 The required correction is a deployment using root **`app.py`**. Public dashboard
 rendering, data display and restart recovery remain unverified until that correction.
 
+### Corrected public deployment
+
+On 2026-10-09 the owner supplied https://hpu4hyd22wxk8puvkmhww7.streamlit.app/
+and confirmed that the dashboard renders. Public hosting metadata confirms the
+correct repository, `main`, root `app.py`, Python 3.12 and Streamlit 1.65. The
+proxied runtime health endpoint returns HTTP 200 and `ok`. Viewer authentication
+is disabled, so the app is public. The latest CI is successful. A monitor refresh
+was dispatched to update observations; no live forecast is issued after 11:00.
+The pre-cutoff inference schedule starts its first eligible attempt on 2026-10-10
+at 09:17 Berlin for 2026-10-11 delivery. Public end-to-end forecast generation,
+live evaluation and restart recovery remain pending; no live performance is claimed.
+
 ## Architecture and changes
 
 Existing research code/notebooks/results are preserved. The production runner
