@@ -23,6 +23,17 @@ and monitor workflows have been verified:
 There is no verified public application URL. The local-only table below records
 the earlier verification snapshot, before that approval.
 
+### Streamlit URL verification
+
+The supplied URL
+`https://german-power-price-forecast-fuiwd7mymph2hfbf4cvpp9.streamlit.app/`
+responds over HTTPS. Its public hosting metadata points to the correct repository
+and `main` branch, with Python 3.12 and Streamlit 1.65, but its main module is
+**`src/depower/__init__.py`**. The owner reports a blank page, consistent with
+that docstring-only entrypoint. Runtime health alone is not dashboard verification.
+The required correction is a deployment using root **`app.py`**. Public dashboard
+rendering, data display and restart recovery remain unverified until that correction.
+
 ## Architecture and changes
 
 Existing research code/notebooks/results are preserved. The production runner

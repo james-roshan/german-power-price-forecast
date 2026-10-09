@@ -10,6 +10,25 @@ The published JSON was verified to return HTTP 200. The owner has signed into
 Streamlit and connected GitHub; deployment form submission is the remaining owner
 step. There is no verified public application URL yet.
 
+### Current Streamlit configuration issue
+
+The owner supplied
+`https://german-power-price-forecast-fuiwd7mymph2hfbf4cvpp9.streamlit.app/`.
+Read-only public hosting metadata confirms Python 3.12, but the deployed main
+module is **`src/depower/__init__.py`**, not **`app.py`**. The initializer only
+contains a package docstring, so a running Streamlit process displays a blank
+page. The actual proxied runtime health endpoint responds, but the dashboard
+entrypoint has not been deployed. Do not label this blank app a verified dashboard.
+
+Create a corrected deployment using this precise GitHub file URL:
+
+`https://github.com/james-roshan/german-power-price-forecast/blob/main/app.py`
+
+Before clicking Deploy, verify repository, `main`, **`app.py`**, Python 3.12 and
+the `data_url` setting below. A new URL may be assigned; verify that app before
+considering removal of the mistaken deployment. No Python package change is
+needed to work around an incorrect hosting entrypoint.
+
 ## Local installation and first run
 
 Use Python **3.12** on Windows or Linux:
