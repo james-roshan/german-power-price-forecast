@@ -159,7 +159,11 @@ requirements, forecast workflow, Streamlit theme and production regression tests
 - [Retraining acceptance, promotion and rollback](docs/retraining.md)
 - [Verification and deployment status](docs/verification.md)
 
-**Deployment status:** local only; no commit/push or verified public URL yet.
+**Deployment status:** code pushed to `main` and persistent `forecast-data` branch
+created on 2026-10-09 with owner approval. GitHub CI passed on Linux; the remote
+monitor refreshed and persisted observations, with the expected no-live-forecast
+alert. Streamlit GitHub sign-in is complete and deployment awaits the owner's
+form submission. No public application URL is verified yet.
 Target recurring cost is **€0** for modest non-commercial use with a public
 repository's standard runners, Streamlit Community Cloud and Open-Meteo's free
 API. Quotas, no-SLA operation and annual storage maintenance are discussed in

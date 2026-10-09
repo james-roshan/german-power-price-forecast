@@ -1,5 +1,28 @@
 # Verification and final report — 2026-10-09
 
+## Publishing update after owner approval
+
+The owner subsequently approved publishing. The initial implementation was
+committed as `4e36c1e` and pushed to the existing public repository's `main` branch.
+Persistent `forecast-data` was initialized as `b4e1c1b` with source histories and
+an observations-only dashboard export. GitHub authentication, repository visibility
+and the remote main revision were checked; visibility was not changed. Remote CI
+and monitor workflows have been verified:
+
+- [GitHub CI](https://github.com/james-roshan/german-power-price-forecast/actions/runs/37938290804)
+  completed successfully, including installation, dependency checks, Ruff and tests on Linux.
+- [Remote monitoring](https://github.com/james-roshan/german-power-price-forecast/actions/runs/37938380752)
+  fetched observations, committed state as `5a240cd`, and uploaded diagnostic artifacts.
+  It exited with the expected no-live-forecast alert; ingestion/persistence succeeded.
+- The public raw dashboard JSON returned HTTP 200 with 168 observations and zero
+  live forecasts. No delivery-day predictions were fabricated after the cutoff.
+- The owner has signed into Streamlit and connected GitHub. Deployment form
+  submission and public URL verification remain pending. First scheduled forecast
+  attempt: 2026-10-10 at 09:17 Europe/Berlin, for 2026-10-11 delivery.
+
+There is no verified public application URL. The local-only table below records
+the earlier verification snapshot, before that approval.
+
 ## Architecture and changes
 
 Existing research code/notebooks/results are preserved. The production runner

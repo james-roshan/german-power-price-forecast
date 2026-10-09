@@ -1,8 +1,14 @@
 # Deployment runbook
 
-Status: locally implemented and tested. Nothing has been committed, pushed,
-provisioned or publicly deployed by this task. GitHub/Streamlit account setup and
-publishing require the owner's action/approval. There is no verified public URL.
+Status updated 2026-10-09: the owner approved publishing. Code is committed and
+pushed to `main` (initial implementation `4e36c1e`), and `forecast-data` was created
+with source histories and an observations-only export. GitHub authentication is
+verified and the repository was already public; visibility was not changed.
+Remote CI passed on Linux. The remote monitor fetched and persisted observations
+and uploaded diagnostics; it exited with the expected missing-live-forecast alert.
+The published JSON was verified to return HTTP 200. The owner has signed into
+Streamlit and connected GitHub; deployment form submission is the remaining owner
+step. There is no verified public application URL yet.
 
 ## Local installation and first run
 
@@ -19,7 +25,7 @@ If the Python environment was created by uv and has no pip, use
 `uv pip install --python .venv/Scripts/python.exe -r requirements-dev.txt`.
 On Linux replace `.venv/Scripts/python.exe` with `.venv/bin/python`.
 Direct dependencies are pinned to the versions verified locally. Linux installation
-and remote CI remain to be verified after pushing; transitive dependencies are
+has passed in GitHub CI; transitive dependencies are
 resolved by the installer. The research package's broader constraints remain usable.
 
 This checkout already has **data/state** with ~3.4 MB of seeded/refreshed CSV
@@ -48,7 +54,8 @@ forecast exits 1 for the expected missing-forecast alert while persisting observ
 ## Publish code and initialize persistent state (approval required)
 
 Review `git diff` and `git status`, then commit the code and push `main` only after
-approval. The task has made neither local commits nor remote writes. If Git reports
+approval. This bootstrap was performed with approval on 2026-10-09; do not repeat
+initialization against the existing `forecast-data` branch. If Git reports
 dubious ownership, use the one-command option
 `git -c safe.directory=C:/Users/rosha/OneDrive/Documents/de-power-price-forecast ...`;
 there is no need to change global Git configuration.
