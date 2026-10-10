@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-10-10T13:42:16.914352+00:00",
+  "updated_at_utc": "2026-10-10T20:03:56.617318+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -684,12 +684,12 @@
   ],
   "comparison": [],
   "input_missing": {
-    "price_eur_mwh": 48,
-    "load_mwh": 50,
-    "residual_load_mwh": 50,
-    "solar_mwh": 50,
-    "wind_onshore_mwh": 50,
-    "wind_offshore_mwh": 50
+    "price_eur_mwh": 24,
+    "load_mwh": 27,
+    "residual_load_mwh": 27,
+    "solar_mwh": 27,
+    "wind_onshore_mwh": 27,
+    "wind_offshore_mwh": 27
   },
   "model_versions": [],
   "pipeline_status": "failed"
