@@ -60,6 +60,10 @@ def chart(frame, columns, title):
 
 st.title("German Electricity Price Forecasting")
 st.caption("DE-LU day-ahead wholesale prices · Hourly EUR/MWh · Issued before 11:00 Europe/Berlin")
+st.caption(
+    "Automatic issue attempts: every half hour at :17/:47 from 07:17 to 10:47 Berlin; cutoff 11:00. "
+    "Scheduled runs may be delayed; evening monitoring is scheduled for 18:17."
+)
 view = st.sidebar.radio(
     "Explore",
     [
@@ -76,6 +80,10 @@ except (requests.RequestException, ValueError) as exc:
     st.error(f"Forecast data unavailable: {exc}")
     data = {}
 latest = data.get("latest")
+if data.get("pipeline_status") == "failed":
+    st.error("The latest pipeline execution failed. Check GitHub Actions diagnostics.")
+elif data.get("pipeline_status") == "alert":
+    st.warning("Data refresh completed with monitoring alerts. See Data and model monitoring.")
 now = pd.Timestamp.now(tz="UTC")
 if not latest:
     st.warning("No verified live forecast has been published. Historical experiments are not live results.")

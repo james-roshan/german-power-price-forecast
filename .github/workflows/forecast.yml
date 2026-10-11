@@ -1,7 +1,8 @@
 name: Production forecast and monitoring
 on:
   schedule:
-    - cron: '17 9,10 * * *'
+    # Multiple earlier attempts reduce exposure to scheduler delays.
+    - cron: '17,47 7-10 * * *'
       timezone: Europe/Berlin
     - cron: '17 18 * * *'
       timezone: Europe/Berlin
@@ -10,8 +11,8 @@ on:
       mode:
         description: Forecast before 11:00 Berlin, or monitor only
         type: choice
-        options: [forecast, monitor]
-        default: forecast
+        options: [auto, forecast, monitor]
+        default: auto
 permissions:
   contents: read
 concurrency:
@@ -46,10 +47,9 @@ jobs:
         working-directory: code
         env:
           REQUESTED_MODE: ${{ inputs.mode }}
-          EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
-          mode="${REQUESTED_MODE:-forecast}"
-          if [ "$EVENT_SCHEDULE" = "17 18 * * *" ]; then mode=monitor; fi
+          # A delayed morning job must refresh monitoring instead of trying a late issue.
+          mode="${REQUESTED_MODE:-auto}"
           python -m depower.production "$mode" --state ../state --runtime data/runtime
       - name: Persist issued forecasts and monitoring (also on monitoring alert)
         if: always() && steps.pipeline.outcome != 'skipped'

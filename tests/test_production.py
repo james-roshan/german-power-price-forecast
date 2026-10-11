@@ -14,7 +14,7 @@ from depower.config import TARGET
 from depower.features import enhanced_features
 from depower.live import delivery_hours
 from depower.monitoring import distribution_shift, export_dashboard, matched_pairs
-from depower.production import restore_ledger
+from depower.production import MonitoringAlert, main, restore_ledger, scheduled_mode
 from depower.validation import validate_frame, validate_weather_units
 
 
@@ -196,3 +196,31 @@ def test_dashboard_with_live_data(monkeypatch, tmp_path):
     for name in ["Forecast overview", "Predicted vs actual", "Model performance", "Data and model monitoring"]:
         app.sidebar.radio[0].set_value(name).run()
         assert not app.exception
+
+
+@pytest.mark.parametrize(
+    "time,expected",
+    [
+        ("2026-10-10T05:17:00Z", "forecast"),
+        ("2026-10-10T08:47:00Z", "forecast"),
+        ("2026-10-10T09:00:00Z", "monitor"),
+        ("2026-10-10T13:41:00Z", "monitor"),
+        ("2026-12-10T06:17:00Z", "forecast"),
+        ("2026-12-10T10:00:00Z", "monitor"),
+        ("2026-03-29T05:17:00Z", "forecast"),
+        ("2026-10-25T06:17:00Z", "forecast"),
+    ],
+)
+def test_scheduled_mode_checks_actual_berlin_time(time, expected):
+    assert scheduled_mode(pd.Timestamp(time)) == expected
+
+
+def test_monitor_alert_is_not_mislabeled_as_execution_failure(monkeypatch, tmp_path):
+    from depower import production
+
+    def alert(*args):
+        raise MonitoringAlert("No fresh successful forecast (>36 hours)")
+
+    monkeypatch.setattr(production, "run", alert)
+    assert main(["auto", "--state", str(tmp_path), "--runtime", str(tmp_path / "runtime")]) == 2
+    assert not (tmp_path / "runtime/pipeline_failure.json").exists()

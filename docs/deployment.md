@@ -120,7 +120,7 @@ licences; preserve attribution to Bundesnetzagentur | SMARD.de and Open-Meteo/EC
    run monitor and verify matched actuals and scores. Turn on GitHub failed-workflow
    notifications in your account notification preferences.
 
-Schedule: **09:17 and 10:17 Berlin** (second is retry/monitor), plus **18:17 Berlin**
+Schedule: **07:17?10:47 Berlin, every half hour at :17/:47** (idempotent retries), plus **18:17 Berlin**
 monitoring, every day. The IANA timezone schedule follows DST. GitHub schedules
 are best-effort and may be delayed/dropped. Runs that reach cutoff withhold forecasts.
 Public repositories inactive for 60 days may have schedules disabled; inspect

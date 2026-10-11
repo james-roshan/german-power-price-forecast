@@ -1,6 +1,6 @@
 # Improvement plan
 
-Updated: 2026-10-09. This document plans future work; unchecked items are not
+Updated: 2026-10-11. This document plans future work; unchecked items are not
 implemented or verified. Keep the existing hourly next-day target, selected
 LightGBM methodology, leakage controls and €0 recurring-cost objective.
 
@@ -12,13 +12,14 @@ The configured schedule uses **Europe/Berlin**, including daylight saving time:
 
 | Time | Operation |
 |---|---|
-| 09:17 daily | First attempt to issue the next delivery day's hourly forecast |
-| 10:17 daily | Retry if no forecast exists; otherwise refresh monitoring without replacing it |
+| 07:17?10:47 daily, at :17/:47 | Eight issue attempts; subsequent runs refresh monitoring without replacing an issued forecast |
 | 11:00 | Hard issue cutoff, not a scheduled execution time |
 | 18:17 daily | Refresh input data and score completed delivery intervals |
 
-First eligible scheduled attempt after deployment: **10 October 2026 at 09:17**,
-predicting the Berlin delivery day **11 October 2026**. GitHub scheduling is
+The original morning run on 10 October started at **15:41 Berlin**, after the
+cutoff, and issued no forecast. The revised schedule adds earlier retries and
+uses actual execution time to select forecasting or monitoring. The next eligible
+attempt after this repair is **12 October 2026 at 07:17**, predicting **13 October**. GitHub scheduling is
 best-effort: an attempt is not a promise of a successful or precisely timed run.
 The workflow must finish recording the forecast before the cutoff.
 
@@ -62,7 +63,7 @@ source schema changes, candidate promotion and periodic storage maintenance.
 - [ ] Check finite outputs, valid negative prices, source/feature hashes and model
   training metadata. Never replace failure with fabricated or retrospective prices.
 - [ ] Confirm the public app displays the same forecast after refreshing.
-- [ ] Verify the 10:17 run leaves the issued bundle unchanged.
+- [ ] Verify a subsequent morning run leaves the issued bundle unchanged.
 - [ ] After delivery, verify matching, MAE/RMSE/bias and naive baselines on identical
   UTC intervals. Inspect partial versus complete delivery-day coverage.
 - [ ] Reboot the hosted app and confirm the persisted forecast is recovered.

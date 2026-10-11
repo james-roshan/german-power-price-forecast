@@ -29,6 +29,17 @@ ROOT = Path(__file__).resolve().parents[2]
 LOG = logging.getLogger(__name__)
 
 
+class MonitoringAlert(RuntimeError):
+    """Inputs/export succeeded, but operational monitoring needs attention."""
+
+
+def scheduled_mode(now=None) -> str:
+    """Choose using actual execution time, never a delayed event's intended time."""
+    now = pd.Timestamp.now(tz="UTC") if now is None else pd.Timestamp(now)
+    local = now.tz_convert(TZ)
+    return "forecast" if 7 <= local.hour < 11 else "monitor"
+
+
 def read_history(path: Path) -> pd.DataFrame:
     frame = pd.read_csv(path, index_col=0)
     frame.index = pd.to_datetime(frame.index, utc=True)
@@ -136,6 +147,8 @@ def seed(state: Path, root: Path) -> None:
 
 
 def run(state: Path, runtime: Path, mode="forecast") -> dict:
+    if mode == "auto":
+        mode = scheduled_mode()
     state, runtime = state.resolve(), runtime.resolve()
     if runtime.exists() and any(runtime.iterdir()):
         raise ValueError("Use a new empty runtime directory for each run")
@@ -171,13 +184,13 @@ def run(state: Path, runtime: Path, mode="forecast") -> dict:
     (runtime / "dashboard.json").write_text(json.dumps(document, indent=2), encoding="utf-8")
     persist(ctx, state, document)
     if document["alerts"]:
-        raise RuntimeError("; ".join(document["alerts"]))
+        raise MonitoringAlert("; ".join(document["alerts"]))
     return document
 
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["seed", "forecast", "monitor"])
+    parser.add_argument("command", choices=["seed", "forecast", "monitor", "auto"])
     parser.add_argument("--state", type=Path, default=Path("data/state"))
     parser.add_argument("--runtime", type=Path, default=Path("data/runtime"))
     parser.add_argument("--root", type=Path, default=ROOT)
@@ -188,6 +201,9 @@ def main(argv=None) -> int:
             seed(args.state, args.root)
         else:
             run(args.state, args.runtime, args.command)
+    except MonitoringAlert as exc:
+        LOG.warning("Monitoring alert (data refresh/export succeeded): %s", exc)
+        return 2
     except Exception:
         LOG.exception("Production pipeline failed")
         args.runtime.mkdir(parents=True, exist_ok=True)

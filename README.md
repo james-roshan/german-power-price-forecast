@@ -142,8 +142,8 @@ streamlit run app.py
 ```
 
 Forecasts must run before **11:00 Europe/Berlin**; each invocation requires a new
-empty runtime directory. The scheduled workflow runs at **09:17 and 10:17 Berlin**
-(idempotent retry), with **18:17** monitoring. GitHub scheduling is best-effort;
+empty runtime directory. The scheduled workflow runs at **07:17?10:47 Berlin, every half hour at :17/:47**
+(idempotent retries), with **18:17** monitoring. GitHub scheduling is best-effort;
 late forecasts are withheld. Automatic work: capture, validation, daily fitting,
 immutable issue, matching, metrics, alerts and state commits. Manual work: initial
 data-branch setup, account authentication, approved publishing, notifications,
