@@ -1,9 +1,10 @@
 {
-  "updated_at_utc": "2026-10-11T09:32:09.985685+00:00",
+  "updated_at_utc": "2026-10-11T09:35:31.428618+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
-    "No fresh successful forecast (>36 hours)"
+    "No fresh successful forecast (>36 hours)",
+    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
   ],
   "drift": {},
   "forecasts": [],
@@ -684,12 +685,17 @@
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 24,
-    "load_mwh": 14,
-    "residual_load_mwh": 14,
+    "load_mwh": 13,
+    "residual_load_mwh": 13,
     "solar_mwh": 13,
     "wind_onshore_mwh": 13,
     "wind_offshore_mwh": 13
   },
   "model_versions": [],
+  "forecast_readiness": {
+    "delivery_day": "2026-10-12",
+    "inputs_complete": false,
+    "reason": "Missing required live features: ['price_eur_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
+  },
   "pipeline_status": "alert"
 }
