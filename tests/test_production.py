@@ -224,3 +224,20 @@ def test_monitor_alert_is_not_mislabeled_as_execution_failure(monkeypatch, tmp_p
     monkeypatch.setattr(production, "run", alert)
     assert main(["auto", "--state", str(tmp_path), "--runtime", str(tmp_path / "runtime")]) == 2
     assert not (tmp_path / "runtime/pipeline_failure.json").exists()
+
+
+def test_readiness_reports_price_gap_without_issuing(tmp_path):
+    from types import SimpleNamespace
+
+    from depower.production import forecast_readiness
+
+    index = pd.date_range("2026-10-01", "2026-10-12", freq="h", tz="UTC")
+    market = pd.DataFrame({TARGET: 50.0}, index=index)
+    ctx = SimpleNamespace(columns=["price_roll168_mean"], cloud_columns=[])
+    weather = pd.DataFrame(index=index)
+    assert forecast_readiness(ctx, market, weather, "2026-10-12")["inputs_complete"]
+    market.loc["2026-10-10", TARGET] = np.nan
+    result = forecast_readiness(ctx, market, weather, "2026-10-12")
+    assert not result["inputs_complete"]
+    assert "price_roll168_mean" in result["reason"]
+    assert not list(tmp_path.iterdir())

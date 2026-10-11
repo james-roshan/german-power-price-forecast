@@ -84,6 +84,9 @@ if data.get("pipeline_status") == "failed":
     st.error("The latest pipeline execution failed. Check GitHub Actions diagnostics.")
 elif data.get("pipeline_status") == "alert":
     st.warning("Data refresh completed with monitoring alerts. See Data and model monitoring.")
+readiness = data.get("forecast_readiness", {})
+if readiness and not readiness.get("inputs_complete"):
+    st.error(f"Forecast input check for {readiness['delivery_day']}: {readiness.get('reason', 'incomplete inputs')}")
 now = pd.Timestamp.now(tz="UTC")
 if not latest:
     st.warning("No verified live forecast has been published. Historical experiments are not live results.")

@@ -207,3 +207,19 @@ commit, run relevant tests, verify CI and check the public dashboard afterward.
 - Deployment/recovery: `docs/deployment.md`
 - Verification evidence: `docs/verification.md`
 - Retraining/promotion: `docs/retraining.md`
+
+
+## 11 October automation incident
+
+The morning scheduler started after the issue cutoff. Added eight earlier
+attempts, actual-time automatic mode selection, and separate monitoring alerts
+from execution failures. A real manual auto run refreshed SMARD/Open-Meteo inputs
+and committed durable state, but correctly published no late forecast.
+
+Captured SMARD DE-LU prices are missing for the 10 October Berlin delivery day;
+the official quarter-hour feed also returns nulls. These break required price
+lags and rolling statistics. Input readiness now reports this blocker on the
+public dashboard. More schedule attempts alone cannot resolve source gaps.
+No verified live forecast exists; the next attempt remains conditional on
+complete inputs and execution before 11:00. Do not impute these gaps silently or
+count diagnostic/replayed predictions as live evidence.

@@ -20,7 +20,7 @@ from urllib3.util.retry import Retry
 from .config import SMARD_SERIES, TARGET, TZ
 from .data import market_path
 from .features import cloud_columns, enhanced_features
-from .live import LiveContext, collect_live_inputs, run_live_cycle
+from .live import LiveContext, collect_live_inputs, prospective_features, run_live_cycle
 from .models import lgb_factory
 from .monitoring import export_dashboard
 from .validation import validate_frame
@@ -38,6 +38,17 @@ def scheduled_mode(now=None) -> str:
     now = pd.Timestamp.now(tz="UTC") if now is None else pd.Timestamp(now)
     local = now.tz_convert(TZ)
     return "forecast" if 7 <= local.hour < 11 else "monitor"
+
+
+def forecast_readiness(ctx, market, weather, delivery_day) -> dict:
+    """Check input completeness without training, issuing or bypassing the cutoff."""
+    result = {"delivery_day": delivery_day, "inputs_complete": False}
+    try:
+        requested, _ = prospective_features(market, weather, delivery_day, ctx.columns, ctx.cloud_columns)
+        result.update(inputs_complete=True, expected_hours=len(requested))
+    except ValueError as exc:
+        result["reason"] = str(exc)
+    return result
 
 
 def read_history(path: Path) -> pd.DataFrame:
@@ -180,6 +191,9 @@ def run(state: Path, runtime: Path, mode="forecast") -> dict:
     )
     reference.to_parquet(runtime / "feature_reference.parquet")
     document = export_dashboard(runtime, market)
+    document["forecast_readiness"] = forecast_readiness(ctx, market, weather, tomorrow)
+    if not document["forecast_readiness"]["inputs_complete"]:
+        document["alerts"].append("Forecast inputs incomplete: " + document["forecast_readiness"]["reason"])
     document["pipeline_status"] = "alert" if document["alerts"] else "success"
     (runtime / "dashboard.json").write_text(json.dumps(document, indent=2), encoding="utf-8")
     persist(ctx, state, document)
