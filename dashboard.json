@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-10-23T19:57:13.906323+00:00",
+  "updated_at_utc": "2026-10-24T09:36:31.744160+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,62 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-16T19:00:00.000Z",
-      "actual": 217.92
-    },
-    {
-      "target_time_utc": "2026-10-16T20:00:00.000Z",
-      "actual": 205.63
-    },
-    {
-      "target_time_utc": "2026-10-16T21:00:00.000Z",
-      "actual": 192.51
-    },
-    {
-      "target_time_utc": "2026-10-16T22:00:00.000Z",
-      "actual": 200.38
-    },
-    {
-      "target_time_utc": "2026-10-16T23:00:00.000Z",
-      "actual": 183.44
-    },
-    {
-      "target_time_utc": "2026-10-17T00:00:00.000Z",
-      "actual": 166.18
-    },
-    {
-      "target_time_utc": "2026-10-17T01:00:00.000Z",
-      "actual": 152.39
-    },
-    {
-      "target_time_utc": "2026-10-17T02:00:00.000Z",
-      "actual": 149.99
-    },
-    {
-      "target_time_utc": "2026-10-17T03:00:00.000Z",
-      "actual": 153.02
-    },
-    {
-      "target_time_utc": "2026-10-17T04:00:00.000Z",
-      "actual": 150.23
-    },
-    {
-      "target_time_utc": "2026-10-17T05:00:00.000Z",
-      "actual": 165.21
-    },
-    {
-      "target_time_utc": "2026-10-17T06:00:00.000Z",
-      "actual": 186.74
-    },
-    {
-      "target_time_utc": "2026-10-17T07:00:00.000Z",
-      "actual": 170.57
-    },
-    {
-      "target_time_utc": "2026-10-17T08:00:00.000Z",
-      "actual": 161.14
-    },
     {
       "target_time_utc": "2026-10-17T09:00:00.000Z",
       "actual": 144.35
@@ -679,22 +623,78 @@
     {
       "target_time_utc": "2026-10-23T18:00:00.000Z",
       "actual": 94.88
+    },
+    {
+      "target_time_utc": "2026-10-23T19:00:00.000Z",
+      "actual": 81.54
+    },
+    {
+      "target_time_utc": "2026-10-23T20:00:00.000Z",
+      "actual": 88.7
+    },
+    {
+      "target_time_utc": "2026-10-23T21:00:00.000Z",
+      "actual": 74.11
+    },
+    {
+      "target_time_utc": "2026-10-23T22:00:00.000Z",
+      "actual": 28.36
+    },
+    {
+      "target_time_utc": "2026-10-23T23:00:00.000Z",
+      "actual": 28.34
+    },
+    {
+      "target_time_utc": "2026-10-24T00:00:00.000Z",
+      "actual": 20.82
+    },
+    {
+      "target_time_utc": "2026-10-24T01:00:00.000Z",
+      "actual": 21.43
+    },
+    {
+      "target_time_utc": "2026-10-24T02:00:00.000Z",
+      "actual": 19.94
+    },
+    {
+      "target_time_utc": "2026-10-24T03:00:00.000Z",
+      "actual": 20.91
+    },
+    {
+      "target_time_utc": "2026-10-24T04:00:00.000Z",
+      "actual": 21.29
+    },
+    {
+      "target_time_utc": "2026-10-24T05:00:00.000Z",
+      "actual": 32.96
+    },
+    {
+      "target_time_utc": "2026-10-24T06:00:00.000Z",
+      "actual": 45.06
+    },
+    {
+      "target_time_utc": "2026-10-24T07:00:00.000Z",
+      "actual": 43.38
+    },
+    {
+      "target_time_utc": "2026-10-24T08:00:00.000Z",
+      "actual": 29.07
     }
   ],
   "comparison": [],
   "input_missing": {
-    "price_eur_mwh": 49,
-    "load_mwh": 52,
-    "residual_load_mwh": 52,
-    "solar_mwh": 52,
-    "wind_onshore_mwh": 52,
-    "wind_offshore_mwh": 52
+    "price_eur_mwh": 25,
+    "load_mwh": 39,
+    "residual_load_mwh": 39,
+    "solar_mwh": 38,
+    "wind_onshore_mwh": 38,
+    "wind_offshore_mwh": 38
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-10-24",
+    "delivery_day": "2026-10-25",
     "inputs_complete": true,
-    "expected_hours": 24
+    "expected_hours": 25
   },
   "pipeline_status": "alert"
 }
