@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-11-02T16:07:21.561589+00:00",
+  "updated_at_utc": "2026-11-02T23:52:32.356016+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,34 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-26T16:00:00.000Z",
-      "actual": 228.23
-    },
-    {
-      "target_time_utc": "2026-10-26T17:00:00.000Z",
-      "actual": 243.29
-    },
-    {
-      "target_time_utc": "2026-10-26T18:00:00.000Z",
-      "actual": 226.92
-    },
-    {
-      "target_time_utc": "2026-10-26T19:00:00.000Z",
-      "actual": 185.53
-    },
-    {
-      "target_time_utc": "2026-10-26T20:00:00.000Z",
-      "actual": 159.35
-    },
-    {
-      "target_time_utc": "2026-10-26T21:00:00.000Z",
-      "actual": 133.3
-    },
-    {
-      "target_time_utc": "2026-10-26T22:00:00.000Z",
-      "actual": 101.26
-    },
     {
       "target_time_utc": "2026-10-26T23:00:00.000Z",
       "actual": 120.64
@@ -679,20 +651,48 @@
     {
       "target_time_utc": "2026-11-02T15:00:00.000Z",
       "actual": 291.33
+    },
+    {
+      "target_time_utc": "2026-11-02T16:00:00.000Z",
+      "actual": 297.51
+    },
+    {
+      "target_time_utc": "2026-11-02T17:00:00.000Z",
+      "actual": 313.29
+    },
+    {
+      "target_time_utc": "2026-11-02T18:00:00.000Z",
+      "actual": 304.02
+    },
+    {
+      "target_time_utc": "2026-11-02T19:00:00.000Z",
+      "actual": 289.85
+    },
+    {
+      "target_time_utc": "2026-11-02T20:00:00.000Z",
+      "actual": 250.64
+    },
+    {
+      "target_time_utc": "2026-11-02T21:00:00.000Z",
+      "actual": 244.66
+    },
+    {
+      "target_time_utc": "2026-11-02T22:00:00.000Z",
+      "actual": 228.49
     }
   ],
   "comparison": [],
   "input_missing": {
-    "price_eur_mwh": 144,
-    "load_mwh": 152,
-    "residual_load_mwh": 152,
-    "solar_mwh": 152,
-    "wind_onshore_mwh": 152,
-    "wind_offshore_mwh": 152
+    "price_eur_mwh": 120,
+    "load_mwh": 144,
+    "residual_load_mwh": 144,
+    "solar_mwh": 144,
+    "wind_onshore_mwh": 144,
+    "wind_offshore_mwh": 144
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-11-03",
+    "delivery_day": "2026-11-04",
     "inputs_complete": true,
     "expected_hours": 24
   },
