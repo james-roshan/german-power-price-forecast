@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-11-04T14:40:00.067818+00:00",
+  "updated_at_utc": "2026-11-04T22:37:24.876355+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,38 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-28T14:00:00.000Z",
-      "actual": 226.17
-    },
-    {
-      "target_time_utc": "2026-10-28T15:00:00.000Z",
-      "actual": 289.49
-    },
-    {
-      "target_time_utc": "2026-10-28T16:00:00.000Z",
-      "actual": 325.07
-    },
-    {
-      "target_time_utc": "2026-10-28T17:00:00.000Z",
-      "actual": 343.09
-    },
-    {
-      "target_time_utc": "2026-10-28T18:00:00.000Z",
-      "actual": 333.48
-    },
-    {
-      "target_time_utc": "2026-10-28T19:00:00.000Z",
-      "actual": 304.0
-    },
-    {
-      "target_time_utc": "2026-10-28T20:00:00.000Z",
-      "actual": 279.17
-    },
-    {
-      "target_time_utc": "2026-10-28T21:00:00.000Z",
-      "actual": 258.28
-    },
     {
       "target_time_utc": "2026-10-28T22:00:00.000Z",
       "actual": 234.2
@@ -679,16 +647,48 @@
     {
       "target_time_utc": "2026-11-04T13:00:00.000Z",
       "actual": 235.08
+    },
+    {
+      "target_time_utc": "2026-11-04T14:00:00.000Z",
+      "actual": 258.54
+    },
+    {
+      "target_time_utc": "2026-11-04T15:00:00.000Z",
+      "actual": 295.62
+    },
+    {
+      "target_time_utc": "2026-11-04T16:00:00.000Z",
+      "actual": 310.92
+    },
+    {
+      "target_time_utc": "2026-11-04T17:00:00.000Z",
+      "actual": 300.01
+    },
+    {
+      "target_time_utc": "2026-11-04T18:00:00.000Z",
+      "actual": 295.35
+    },
+    {
+      "target_time_utc": "2026-11-04T19:00:00.000Z",
+      "actual": 268.94
+    },
+    {
+      "target_time_utc": "2026-11-04T20:00:00.000Z",
+      "actual": 234.1
+    },
+    {
+      "target_time_utc": "2026-11-04T21:00:00.000Z",
+      "actual": 229.04
     }
   ],
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 72,
-    "load_mwh": 105,
-    "residual_load_mwh": 105,
-    "solar_mwh": 105,
-    "wind_onshore_mwh": 105,
-    "wind_offshore_mwh": 105
+    "load_mwh": 98,
+    "residual_load_mwh": 98,
+    "solar_mwh": 97,
+    "wind_onshore_mwh": 97,
+    "wind_offshore_mwh": 97
   },
   "model_versions": [],
   "forecast_readiness": {
