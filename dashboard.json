@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-11-06T14:23:10.565884+00:00",
+  "updated_at_utc": "2026-11-06T22:06:22.270295+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,38 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-30T14:00:00.000Z",
-      "actual": 285.35
-    },
-    {
-      "target_time_utc": "2026-10-30T15:00:00.000Z",
-      "actual": 323.97
-    },
-    {
-      "target_time_utc": "2026-10-30T16:00:00.000Z",
-      "actual": 345.93
-    },
-    {
-      "target_time_utc": "2026-10-30T17:00:00.000Z",
-      "actual": 324.77
-    },
-    {
-      "target_time_utc": "2026-10-30T18:00:00.000Z",
-      "actual": 311.72
-    },
-    {
-      "target_time_utc": "2026-10-30T19:00:00.000Z",
-      "actual": 291.97
-    },
-    {
-      "target_time_utc": "2026-10-30T20:00:00.000Z",
-      "actual": 262.58
-    },
-    {
-      "target_time_utc": "2026-10-30T21:00:00.000Z",
-      "actual": 246.83
-    },
     {
       "target_time_utc": "2026-10-30T22:00:00.000Z",
       "actual": 235.38
@@ -679,16 +647,48 @@
     {
       "target_time_utc": "2026-11-06T13:00:00.000Z",
       "actual": 258.43
+    },
+    {
+      "target_time_utc": "2026-11-06T14:00:00.000Z",
+      "actual": 298.96
+    },
+    {
+      "target_time_utc": "2026-11-06T15:00:00.000Z",
+      "actual": 330.99
+    },
+    {
+      "target_time_utc": "2026-11-06T16:00:00.000Z",
+      "actual": 355.17
+    },
+    {
+      "target_time_utc": "2026-11-06T17:00:00.000Z",
+      "actual": 357.12
+    },
+    {
+      "target_time_utc": "2026-11-06T18:00:00.000Z",
+      "actual": 347.5
+    },
+    {
+      "target_time_utc": "2026-11-06T19:00:00.000Z",
+      "actual": 320.28
+    },
+    {
+      "target_time_utc": "2026-11-06T20:00:00.000Z",
+      "actual": 292.89
+    },
+    {
+      "target_time_utc": "2026-11-06T21:00:00.000Z",
+      "actual": 275.99
     }
   ],
   "comparison": [],
   "input_missing": {
-    "price_eur_mwh": 48,
-    "load_mwh": 58,
-    "residual_load_mwh": 58,
-    "solar_mwh": 58,
-    "wind_onshore_mwh": 58,
-    "wind_offshore_mwh": 58
+    "price_eur_mwh": 24,
+    "load_mwh": 50,
+    "residual_load_mwh": 50,
+    "solar_mwh": 50,
+    "wind_onshore_mwh": 50,
+    "wind_offshore_mwh": 50
   },
   "model_versions": [],
   "forecast_readiness": {
