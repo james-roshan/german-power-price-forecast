@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-11-07T13:12:27.539343+00:00",
+  "updated_at_utc": "2026-11-07T20:52:16.646269+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,34 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-31T13:00:00.000Z",
-      "actual": 231.95
-    },
-    {
-      "target_time_utc": "2026-10-31T14:00:00.000Z",
-      "actual": 254.7
-    },
-    {
-      "target_time_utc": "2026-10-31T15:00:00.000Z",
-      "actual": 290.33
-    },
-    {
-      "target_time_utc": "2026-10-31T16:00:00.000Z",
-      "actual": 296.57
-    },
-    {
-      "target_time_utc": "2026-10-31T17:00:00.000Z",
-      "actual": 298.97
-    },
-    {
-      "target_time_utc": "2026-10-31T18:00:00.000Z",
-      "actual": 297.02
-    },
-    {
-      "target_time_utc": "2026-10-31T19:00:00.000Z",
-      "actual": 290.09
-    },
     {
       "target_time_utc": "2026-10-31T20:00:00.000Z",
       "actual": 269.55
@@ -679,16 +651,44 @@
     {
       "target_time_utc": "2026-11-07T12:00:00.000Z",
       "actual": 226.82
+    },
+    {
+      "target_time_utc": "2026-11-07T13:00:00.000Z",
+      "actual": 243.45
+    },
+    {
+      "target_time_utc": "2026-11-07T14:00:00.000Z",
+      "actual": 293.38
+    },
+    {
+      "target_time_utc": "2026-11-07T15:00:00.000Z",
+      "actual": 320.64
+    },
+    {
+      "target_time_utc": "2026-11-07T16:00:00.000Z",
+      "actual": 322.0
+    },
+    {
+      "target_time_utc": "2026-11-07T17:00:00.000Z",
+      "actual": 323.25
+    },
+    {
+      "target_time_utc": "2026-11-07T18:00:00.000Z",
+      "actual": 321.91
+    },
+    {
+      "target_time_utc": "2026-11-07T19:00:00.000Z",
+      "actual": 308.16
     }
   ],
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 0,
-    "load_mwh": 35,
-    "residual_load_mwh": 35,
-    "solar_mwh": 35,
-    "wind_onshore_mwh": 35,
-    "wind_offshore_mwh": 35
+    "load_mwh": 27,
+    "residual_load_mwh": 27,
+    "solar_mwh": 27,
+    "wind_onshore_mwh": 27,
+    "wind_offshore_mwh": 27
   },
   "model_versions": [],
   "forecast_readiness": {
