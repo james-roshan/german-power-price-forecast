@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-11-07T20:52:16.646269+00:00",
+  "updated_at_utc": "2026-11-08T13:33:48.428156+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
@@ -8,74 +8,6 @@
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-10-31T20:00:00.000Z",
-      "actual": 269.55
-    },
-    {
-      "target_time_utc": "2026-10-31T21:00:00.000Z",
-      "actual": 260.77
-    },
-    {
-      "target_time_utc": "2026-10-31T22:00:00.000Z",
-      "actual": 244.88
-    },
-    {
-      "target_time_utc": "2026-10-31T23:00:00.000Z",
-      "actual": 245.79
-    },
-    {
-      "target_time_utc": "2026-11-01T00:00:00.000Z",
-      "actual": 244.47
-    },
-    {
-      "target_time_utc": "2026-11-01T01:00:00.000Z",
-      "actual": 243.31
-    },
-    {
-      "target_time_utc": "2026-11-01T02:00:00.000Z",
-      "actual": 237.82
-    },
-    {
-      "target_time_utc": "2026-11-01T03:00:00.000Z",
-      "actual": 237.76
-    },
-    {
-      "target_time_utc": "2026-11-01T04:00:00.000Z",
-      "actual": 240.23
-    },
-    {
-      "target_time_utc": "2026-11-01T05:00:00.000Z",
-      "actual": 242.67
-    },
-    {
-      "target_time_utc": "2026-11-01T06:00:00.000Z",
-      "actual": 247.77
-    },
-    {
-      "target_time_utc": "2026-11-01T07:00:00.000Z",
-      "actual": 247.42
-    },
-    {
-      "target_time_utc": "2026-11-01T08:00:00.000Z",
-      "actual": 238.73
-    },
-    {
-      "target_time_utc": "2026-11-01T09:00:00.000Z",
-      "actual": 245.91
-    },
-    {
-      "target_time_utc": "2026-11-01T10:00:00.000Z",
-      "actual": 243.92
-    },
-    {
-      "target_time_utc": "2026-11-01T11:00:00.000Z",
-      "actual": 242.3
-    },
-    {
-      "target_time_utc": "2026-11-01T12:00:00.000Z",
-      "actual": 246.52
-    },
     {
       "target_time_utc": "2026-11-01T13:00:00.000Z",
       "actual": 242.27
@@ -679,20 +611,88 @@
     {
       "target_time_utc": "2026-11-07T19:00:00.000Z",
       "actual": 308.16
+    },
+    {
+      "target_time_utc": "2026-11-07T20:00:00.000Z",
+      "actual": 286.74
+    },
+    {
+      "target_time_utc": "2026-11-07T21:00:00.000Z",
+      "actual": 264.69
+    },
+    {
+      "target_time_utc": "2026-11-07T22:00:00.000Z",
+      "actual": 237.76
+    },
+    {
+      "target_time_utc": "2026-11-07T23:00:00.000Z",
+      "actual": 240.97
+    },
+    {
+      "target_time_utc": "2026-11-08T00:00:00.000Z",
+      "actual": 226.08
+    },
+    {
+      "target_time_utc": "2026-11-08T01:00:00.000Z",
+      "actual": 214.88
+    },
+    {
+      "target_time_utc": "2026-11-08T02:00:00.000Z",
+      "actual": 215.72
+    },
+    {
+      "target_time_utc": "2026-11-08T03:00:00.000Z",
+      "actual": 215.01
+    },
+    {
+      "target_time_utc": "2026-11-08T04:00:00.000Z",
+      "actual": 214.38
+    },
+    {
+      "target_time_utc": "2026-11-08T05:00:00.000Z",
+      "actual": 218.83
+    },
+    {
+      "target_time_utc": "2026-11-08T06:00:00.000Z",
+      "actual": 222.65
+    },
+    {
+      "target_time_utc": "2026-11-08T07:00:00.000Z",
+      "actual": 220.36
+    },
+    {
+      "target_time_utc": "2026-11-08T08:00:00.000Z",
+      "actual": 220.29
+    },
+    {
+      "target_time_utc": "2026-11-08T09:00:00.000Z",
+      "actual": 211.95
+    },
+    {
+      "target_time_utc": "2026-11-08T10:00:00.000Z",
+      "actual": 212.96
+    },
+    {
+      "target_time_utc": "2026-11-08T11:00:00.000Z",
+      "actual": 213.97
+    },
+    {
+      "target_time_utc": "2026-11-08T12:00:00.000Z",
+      "actual": 211.38
     }
   ],
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 0,
-    "load_mwh": 27,
-    "residual_load_mwh": 27,
-    "solar_mwh": 27,
-    "wind_onshore_mwh": 27,
-    "wind_offshore_mwh": 27
+    "load_mwh": 11,
+    "residual_load_mwh": 11,
+    "solar_mwh": 10,
+    "wind_onshore_mwh": 10,
+    "wind_offshore_mwh": 10
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-11-08",
+    "delivery_day": "2026-11-09",
     "inputs_complete": true,
     "expected_hours": 24
   },
