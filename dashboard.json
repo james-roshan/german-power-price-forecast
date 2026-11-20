@@ -1,10 +1,10 @@
 {
-  "updated_at_utc": "2026-11-20T15:33:59.833191+00:00",
+  "updated_at_utc": "2026-11-20T23:04:57.232933+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
     "No fresh successful forecast (>36 hours)",
-    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag24h']"
+    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag48h', 'load_mwh_lag48h', 'residual_load_mwh_lag48h', 'solar_mwh_lag48h', 'wind_onshore_mwh_lag48h', 'wind_offshore_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
   ],
   "drift": {},
   "forecasts": [],
@@ -685,17 +685,17 @@
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 72,
-    "load_mwh": 57,
-    "residual_load_mwh": 57,
-    "solar_mwh": 56,
-    "wind_onshore_mwh": 56,
-    "wind_offshore_mwh": 56
+    "load_mwh": 49,
+    "residual_load_mwh": 49,
+    "solar_mwh": 49,
+    "wind_onshore_mwh": 49,
+    "wind_offshore_mwh": 49
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-11-21",
+    "delivery_day": "2026-11-22",
     "inputs_complete": false,
-    "reason": "Missing required live features: ['price_eur_mwh_lag24h']"
+    "reason": "Missing required live features: ['price_eur_mwh_lag48h', 'load_mwh_lag48h', 'residual_load_mwh_lag48h', 'solar_mwh_lag48h', 'wind_onshore_mwh_lag48h', 'wind_offshore_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
   },
   "pipeline_status": "alert"
 }
