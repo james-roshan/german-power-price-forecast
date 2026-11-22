@@ -1,75 +1,14 @@
 {
-  "updated_at_utc": "2026-11-21T22:10:50.077188+00:00",
+  "updated_at_utc": "2026-11-22T14:40:58.137269+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
-    "Missing or stale observations (>48 hours)",
     "No fresh successful forecast (>36 hours)",
-    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
+    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag48h', 'price_eur_mwh_lag72h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
   ],
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-11-12T23:00:00.000Z",
-      "actual": 144.47
-    },
-    {
-      "target_time_utc": "2026-11-13T00:00:00.000Z",
-      "actual": 144.02
-    },
-    {
-      "target_time_utc": "2026-11-13T01:00:00.000Z",
-      "actual": 137.57
-    },
-    {
-      "target_time_utc": "2026-11-13T02:00:00.000Z",
-      "actual": 136.05
-    },
-    {
-      "target_time_utc": "2026-11-13T03:00:00.000Z",
-      "actual": 136.77
-    },
-    {
-      "target_time_utc": "2026-11-13T04:00:00.000Z",
-      "actual": 144.55
-    },
-    {
-      "target_time_utc": "2026-11-13T05:00:00.000Z",
-      "actual": 170.8
-    },
-    {
-      "target_time_utc": "2026-11-13T06:00:00.000Z",
-      "actual": 201.15
-    },
-    {
-      "target_time_utc": "2026-11-13T07:00:00.000Z",
-      "actual": 202.17
-    },
-    {
-      "target_time_utc": "2026-11-13T08:00:00.000Z",
-      "actual": 150.41
-    },
-    {
-      "target_time_utc": "2026-11-13T09:00:00.000Z",
-      "actual": 114.36
-    },
-    {
-      "target_time_utc": "2026-11-13T10:00:00.000Z",
-      "actual": 93.48
-    },
-    {
-      "target_time_utc": "2026-11-13T11:00:00.000Z",
-      "actual": 90.51
-    },
-    {
-      "target_time_utc": "2026-11-13T12:00:00.000Z",
-      "actual": 100.2
-    },
-    {
-      "target_time_utc": "2026-11-13T13:00:00.000Z",
-      "actual": 125.8
-    },
     {
       "target_time_utc": "2026-11-13T14:00:00.000Z",
       "actual": 164.03
@@ -681,22 +620,82 @@
     {
       "target_time_utc": "2026-11-19T22:00:00.000Z",
       "actual": 183.94
+    },
+    {
+      "target_time_utc": "2026-11-21T23:00:00.000Z",
+      "actual": 193.7
+    },
+    {
+      "target_time_utc": "2026-11-22T00:00:00.000Z",
+      "actual": 190.03
+    },
+    {
+      "target_time_utc": "2026-11-22T01:00:00.000Z",
+      "actual": 187.87
+    },
+    {
+      "target_time_utc": "2026-11-22T02:00:00.000Z",
+      "actual": 186.32
+    },
+    {
+      "target_time_utc": "2026-11-22T03:00:00.000Z",
+      "actual": 187.88
+    },
+    {
+      "target_time_utc": "2026-11-22T04:00:00.000Z",
+      "actual": 190.86
+    },
+    {
+      "target_time_utc": "2026-11-22T05:00:00.000Z",
+      "actual": 194.92
+    },
+    {
+      "target_time_utc": "2026-11-22T06:00:00.000Z",
+      "actual": 195.98
+    },
+    {
+      "target_time_utc": "2026-11-22T07:00:00.000Z",
+      "actual": 194.39
+    },
+    {
+      "target_time_utc": "2026-11-22T08:00:00.000Z",
+      "actual": 199.34
+    },
+    {
+      "target_time_utc": "2026-11-22T09:00:00.000Z",
+      "actual": 197.8
+    },
+    {
+      "target_time_utc": "2026-11-22T10:00:00.000Z",
+      "actual": 200.51
+    },
+    {
+      "target_time_utc": "2026-11-22T11:00:00.000Z",
+      "actual": 201.6
+    },
+    {
+      "target_time_utc": "2026-11-22T12:00:00.000Z",
+      "actual": 200.36
+    },
+    {
+      "target_time_utc": "2026-11-22T13:00:00.000Z",
+      "actual": 209.29
     }
   ],
   "comparison": [],
   "input_missing": {
     "price_eur_mwh": 48,
-    "load_mwh": 26,
-    "residual_load_mwh": 26,
-    "solar_mwh": 26,
-    "wind_onshore_mwh": 26,
-    "wind_offshore_mwh": 26
+    "load_mwh": 9,
+    "residual_load_mwh": 9,
+    "solar_mwh": 9,
+    "wind_onshore_mwh": 9,
+    "wind_offshore_mwh": 9
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-11-22",
+    "delivery_day": "2026-11-23",
     "inputs_complete": false,
-    "reason": "Missing required live features: ['price_eur_mwh_lag48h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
+    "reason": "Missing required live features: ['price_eur_mwh_lag48h', 'price_eur_mwh_lag72h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
   },
   "pipeline_status": "alert"
 }
