@@ -1,34 +1,14 @@
 {
-  "updated_at_utc": "2026-11-23T18:21:06.762214+00:00",
+  "updated_at_utc": "2026-11-24T03:20:10.173916+00:00",
   "latest": null,
   "metrics": {},
   "alerts": [
     "No fresh successful forecast (>36 hours)",
-    "Forecast inputs incomplete: Missing required live features: ['price_eur_mwh_lag72h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
+    "Forecast inputs incomplete: Missing required live features: ['load_mwh_lag48h', 'residual_load_mwh_lag48h', 'solar_mwh_lag48h', 'wind_onshore_mwh_lag48h', 'wind_offshore_mwh_lag48h', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
   ],
   "drift": {},
   "forecasts": [],
   "observations": [
-    {
-      "target_time_utc": "2026-11-14T18:00:00.000Z",
-      "actual": 244.21
-    },
-    {
-      "target_time_utc": "2026-11-14T19:00:00.000Z",
-      "actual": 207.7
-    },
-    {
-      "target_time_utc": "2026-11-14T20:00:00.000Z",
-      "actual": 202.39
-    },
-    {
-      "target_time_utc": "2026-11-14T21:00:00.000Z",
-      "actual": 202.79
-    },
-    {
-      "target_time_utc": "2026-11-14T22:00:00.000Z",
-      "actual": 189.06
-    },
     {
       "target_time_utc": "2026-11-14T23:00:00.000Z",
       "actual": 166.73
@@ -680,6 +660,26 @@
     {
       "target_time_utc": "2026-11-23T17:00:00.000Z",
       "actual": 316.77
+    },
+    {
+      "target_time_utc": "2026-11-23T18:00:00.000Z",
+      "actual": 302.36
+    },
+    {
+      "target_time_utc": "2026-11-23T19:00:00.000Z",
+      "actual": 282.11
+    },
+    {
+      "target_time_utc": "2026-11-23T20:00:00.000Z",
+      "actual": 254.77
+    },
+    {
+      "target_time_utc": "2026-11-23T21:00:00.000Z",
+      "actual": 238.29
+    },
+    {
+      "target_time_utc": "2026-11-23T22:00:00.000Z",
+      "actual": 213.6
     }
   ],
   "comparison": [],
@@ -693,9 +693,9 @@
   },
   "model_versions": [],
   "forecast_readiness": {
-    "delivery_day": "2026-11-24",
+    "delivery_day": "2026-11-25",
     "inputs_complete": false,
-    "reason": "Missing required live features: ['price_eur_mwh_lag72h', 'price_roll24_mean', 'price_roll24_std', 'price_roll168_mean']"
+    "reason": "Missing required live features: ['load_mwh_lag48h', 'residual_load_mwh_lag48h', 'solar_mwh_lag48h', 'wind_onshore_mwh_lag48h', 'wind_offshore_mwh_lag48h', 'price_roll168_mean', 'price_eur_mwh_lag24h']"
   },
   "pipeline_status": "alert"
 }
